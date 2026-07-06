@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 613a0a019aea4554bf9122674c298d7b, type: 3}
+  m_Name: Zombie
+  m_EditorClassIdentifier: Assembly-CSharp::Data.EnemyData
+  unitStats:
+    maxHealth: 50
+    moveSpeed: 2.5
+    knockbackDecay: 6
+    knockbackResistance: 1
+  combatMoves:
+  - {fileID: 11400000, guid: 007fc9a32eea913429616073c8b6a71b, type: 2}
+  rewards:
+    scoreValue: 500
+    drops:
+    - itemData: {fileID: 11400000, guid: 0a5422d1f6c6e0c45b60ebf88ff1ec59, type: 2}
+      quantity: 10
+      chance: 0.5
+    - itemData: {fileID: 11400000, guid: 2df9a7283ada3c646bad049f0cd47410, type: 2}
+      quantity: 5
+      chance: 0.3
+    - itemData: {fileID: 11400000, guid: ec204471351cc5840ba6a05fd927d56d, type: 2}
+      quantity: 1
+      chance: 0.2
