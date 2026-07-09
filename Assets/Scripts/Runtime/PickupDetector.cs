@@ -15,7 +15,7 @@ namespace Runtime
         private void OnTriggerEnter(Collider other)
         {
             var loot = other.GetComponent<Loot>();
-            if (loot == null) return;
+            if (loot == null || !loot.IsAvailable()) return;
             
             var remaining = _inventory.TryAddItem(loot.ItemData, loot.Quantity);
             loot.OnCollectResult(remaining);

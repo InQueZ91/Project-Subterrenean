@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c1693c7c95f94a8ba4fb20419008ffd4, type: 3}
-  m_Name: Explode1
+  m_Name: Explode_Small
   m_EditorClassIdentifier: Assembly-CSharp::Data.HitEffects.Explode
   hitVFX: {fileID: 0}
-  isFriendlyFire: 1
-  radius: 4
-  falloff: 0.3
+  isFriendlyFire: 0
+  radius: 2
+  falloff: 0
   hitLayers:
     serializedVersion: 2
-    m_Bits: 320
+    m_Bits: 448

@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Bat
   m_EditorClassIdentifier: Assembly-CSharp::Data.WeaponData
   stats:
-    fireRate: 0.5
-    isAutomatic: 1
+    fireRate: 1
+    isAutomatic: 0
   supply: {fileID: 11400000, guid: 259f7cde888dd7c4780e8f0ee24cabb2, type: 2}
   output: {fileID: 11400000, guid: 927703cfd1e06d34bb5e0f2a60eb3ac9, type: 2}
   visualPrefab: {fileID: 5642363291106522870, guid: 592b2ef016b895243b66ea6b851c42f5, type: 3}

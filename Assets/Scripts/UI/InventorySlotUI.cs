@@ -17,22 +17,28 @@ namespace UI
             _canvasGroup = GetComponent<CanvasGroup>();
         }
         
-        private void Start() => Select();
-        
         public void SetEmpty()
         {
             icon.enabled = false;
             stacksText.text = "";
         }
 
-        public void SetItem(Sprite itemIcon, int stacks)
+        public void SetItem(Sprite itemIcon, int stacks, bool isUsable)
         {
+            icon.enabled = true;
             icon.sprite = itemIcon;
             stacksText.text = stacks > 0 ? stacks.ToString() : "";
+            icon.color = isUsable ? Color.greenYellow : Color.gray;
         }
         
-        public void Select() => _canvasGroup.alpha = 1;
-        
-        public void Deselect() => _canvasGroup.alpha = 0;
+        public void Select()
+        {
+            _canvasGroup.alpha = 1;
+        }
+
+        public void Deselect()
+        {
+            _canvasGroup.alpha = 0.5f;
+        }
     }
 }

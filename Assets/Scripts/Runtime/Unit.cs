@@ -14,12 +14,20 @@ namespace Runtime
         [Header("Events")]
         public UnityEvent<float> onHealthChanged;
         public UnityEvent<float, Vector3> onDamageTaken;
+        public UnityEvent<float> onHealed;
         public UnityEvent onDied;
     
         public void Init(UnitStats stats)
         {
             _stats = stats;
             CurrentHealth = _stats.maxHealth;
+        }
+
+        public void Heal(float amount)
+        {
+            CurrentHealth = Mathf.Min(_stats.maxHealth, CurrentHealth + amount);
+            onHealthChanged?.Invoke(CurrentHealth / _stats.maxHealth);
+            onHealed?.Invoke(amount);
         }
         
         // Damage

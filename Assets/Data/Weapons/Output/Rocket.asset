@@ -15,7 +15,7 @@ MonoBehaviour:
   prefab: {fileID: 4079493092272257954, guid: 39fa8ca1352e4a748aee51e6b5840365, type: 3}
   stats:
     speed: 100
-    damage: 30
+    damage: 50
     knockback: 10
     range: 100
     pierce: 0

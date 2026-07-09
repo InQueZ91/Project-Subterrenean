@@ -14,10 +14,8 @@ namespace Controllers
     {
         [SerializeField] private CharacterData data;
 
-        [Header("References")] [SerializeField]
-        private Transform cameraTransform;
-
-        [SerializeField] private Transform modelTransform;
+        [Header("References")] 
+        [SerializeField] private Transform cameraTransform;
 
         // Private state
         private Camera _cam;
@@ -76,11 +74,16 @@ namespace Controllers
             HandleMovement();
             HandleAiming();
             HandleShooting();
-            HandleSwitching();
+            HandleSwitchingWeapon();
+            HandleSwitchingItem();
+            HandleUseItem();
+            HandleDropItem();
         }
 
         private void OnDamageTaken(float amount, Vector3 knockback)
         {
+            // Flatten knockback to XZ — Y component causes floating with CharacterController
+            knockback.y = 0f;
             _knockbackVelocity = knockback / data.unitStats.knockbackResistance;
         }
 
@@ -102,11 +105,12 @@ namespace Controllers
 
             var motion = moveDir * (data.unitStats.moveSpeed * Time.deltaTime);
             motion += _knockbackVelocity * Time.deltaTime;
+            motion.y = -2f * Time.deltaTime; // constant ground-glue, no jumping
 
             _cc.Move(motion);
         }
 
-        // Aim
+        // Weapon
         private void HandleAiming()
         {
             if (Mouse.current == null) return;
@@ -119,8 +123,8 @@ namespace Controllers
             dir.y = 0f;
             if (dir.sqrMagnitude < 0.01f) return;
 
-            modelTransform.rotation = Quaternion.RotateTowards(
-                modelTransform.rotation,
+            transform.rotation = Quaternion.RotateTowards(
+                transform.rotation,
                 Quaternion.LookRotation(dir),
                 data.rotationSpeed * Time.deltaTime
             );
@@ -137,13 +141,13 @@ namespace Controllers
                 : _actions.Player.Fire.WasPressedThisFrame();
 
             if (shouldFire)
-                _weaponHandler.Fire(modelTransform.forward);
+                _weaponHandler.Fire(transform.forward);
 
             if (_actions.Player.Reload.WasPressedThisFrame())
                 _weaponHandler.Reload();
         }
 
-        private void HandleSwitching()
+        private void HandleSwitchingWeapon()
         {
             if (_weaponHandler.CurrentWeapon == null) return;
 
@@ -152,6 +156,34 @@ namespace Controllers
 
             if (_actions.Player.PreviousWeapon.WasPressedThisFrame())
                 _weaponHandler.SwitchWeapon(_weaponHandler.CurrentWeaponIndex - 1);
+        }
+
+        // Item
+        private void HandleUseItem()
+        {
+            if (_inventoryHandler.CurrentItem == null) return;
+
+            if (_actions.Player.UseItem.WasPressedThisFrame())
+                _inventoryHandler.UseItem(gameObject);
+        }
+        
+        private void HandleDropItem()
+        {
+            if (_inventoryHandler.CurrentItem == null) return;
+
+            if (_actions.Player.DropItem.WasPressedThisFrame())
+                _inventoryHandler.DropItem();
+        }
+        
+        private void HandleSwitchingItem()
+        {
+            if (_inventoryHandler.CurrentItem == null) return;
+
+            if (_actions.Player.NextItem.WasPressedThisFrame())
+                _inventoryHandler.SwitchItem(_inventoryHandler.CurrentItemIndex + 1);
+
+            if (_actions.Player.PreviousItem.WasPressedThisFrame())
+                _inventoryHandler.SwitchItem(_inventoryHandler.CurrentItemIndex - 1);
         }
     }
 }

@@ -11,18 +11,24 @@ namespace Runtime
         public int Quantity {get; private set;}
         private bool _pickedUp;
         
+        private float _availableTime;
+        
+        // Events
         public UnityEvent<ItemData, int> onCollected; // quantity
-
-        public void Init(ItemData itemData, int quantity)
+        
+        public void Init(ItemData itemData, int quantity, float delay)
         {
             ItemData = itemData;
             Quantity = quantity;
+            _availableTime = Time.time + delay;
         }
-
+        
+        public bool IsAvailable() => Time.time > _availableTime;
+        
         public void Collect()
         {
             if (ItemData == null || _pickedUp) return;
-            
+
             _pickedUp = true;
             GetComponent<Collider>().enabled = false;
         }

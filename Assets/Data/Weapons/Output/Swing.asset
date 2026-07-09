@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Data.Output.MeleeOutputData
   stats:
     damage: 5
-    knockback: 5
+    knockback: 3
     range: 1
     hitboxRadius: 1
   hitEffects:

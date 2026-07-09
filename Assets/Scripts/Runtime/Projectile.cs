@@ -1,12 +1,10 @@
 ﻿using Data.HitEffects;
-using Data.Stats;
 using Data.Stats.Output;
 using Runtime.Spawners;
 using UnityEngine;
 
 namespace Runtime
 {
-    [RequireComponent(typeof(Rigidbody))]
     public class Projectile : MonoBehaviour
     {
         // References
@@ -48,12 +46,6 @@ namespace Runtime
             _remainingHits = _stats.pierce;
             _remainingBounces = _stats.ricochet;
             _hasHit = false;
-            
-            _rb = GetComponent<Rigidbody>();
-            _rb.isKinematic = true;
-            _rb.useGravity = false;
-            // _rb.useGravity = _stats.useGravity;
-            // _rb.linearVelocity = direction * _stats.speed;
         }
 
         // Unity lifecycle

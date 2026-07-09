@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1f3f1f5a1c643cd8b57590158b5a608, type: 3}
+  m_Name: Claymore
+  m_EditorClassIdentifier: Assembly-CSharp::Data.Items.Claymore
+  isStackable: 1
+  maxStack: 6
+  lootPrefab: {fileID: 4871147286282597990, guid: 5c29d2ae8fd57bb4e81f60194beb9364, type: 3}
+  icon: {fileID: 21300000, guid: 5fd86ae8f82076b4bb7db7e48c2bd44a, type: 3}
+  spawnPrefab: {fileID: 6563199809735589973, guid: 27e7cf73c524dd24fad2c5878ac733bf, type: 3}
+  triggerMask:
+    serializedVersion: 2
+    m_Bits: 320
+  stats:
+    damage: 30
+    knockback: 6
+  hitEffects:
+  - {fileID: 11400000, guid: 40aecc82896acab48a3030fe4e3833ec, type: 2}
+  triggerRadius: 1
+  activateDelay: 1
+  detonateDelay: 1.5

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using Data;
 using Data.Items;
+using Runtime.Items;
+using Runtime.Spawners;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -11,19 +13,62 @@ namespace Runtime.Handlers
     public class InventoryHandler : MonoBehaviour
     {
         [SerializeField] private int inventoryCapacity = 6;
-
+        [SerializeField] private int currentItemIndex;
         private readonly List<Item> _inventory = new();
+        
+        public int CurrentItemIndex => currentItemIndex;
+        public Item CurrentItem => _inventory.Count > 0 ? _inventory[currentItemIndex] : null;
 
         // Events
         public UnityEvent<List<Item>, int> onInventoryChanged; // inventory, capacity
+        public UnityEvent<int> onItemSelected; // index
+        
+        private void NotifyInventoryChanged()
+        {
+            onInventoryChanged?.Invoke(_inventory, inventoryCapacity);
+        }
         
         public void Init(StartingItemData[] startingItems)
         {
             _inventory.Clear();
             foreach (var item in startingItems)
                 TryAddItem(item.itemData, item.quantity);
+            
+            if (_inventory.Count > 0) SwitchItem(0);
+        }
 
-            onInventoryChanged?.Invoke(_inventory, inventoryCapacity);
+        public void DropItem()
+        {
+            var item = CurrentItem;
+            if (item == null) return;
+            
+            SpawnDrop(item);
+            CompactInventory();
+            NotifyInventoryChanged();
+        }
+
+        private void SpawnDrop(Item item)
+        {
+            item.Consume();
+            LootSpawner.Instance.Spawn(item.Data, 1, transform.position);
+        }
+        
+        public void UseItem(GameObject user)
+        {
+            var itemToUse = CurrentItem;
+            if (itemToUse == null) return;
+            if (!itemToUse.Use(user)) return;
+            if (itemToUse.CurrentStacks <= 0) SwitchItem(currentItemIndex);
+            
+            CompactInventory();
+            NotifyInventoryChanged();
+        }
+        
+        public void SwitchItem(int index)
+        {
+            if (_inventory.Count == 0) return;
+            currentItemIndex = ((index % _inventory.Count) + _inventory.Count) % _inventory.Count;
+            onItemSelected?.Invoke(currentItemIndex);
         }
 
         public int GetAmmoCount(AmmoType ammoType)
@@ -48,7 +93,7 @@ namespace Runtime.Handlers
                 _inventory.Remove(ammoItem);
 
             CompactInventory();
-            onInventoryChanged?.Invoke(_inventory, inventoryCapacity);
+            NotifyInventoryChanged();
             return consumed;
         }
 
@@ -58,7 +103,7 @@ namespace Runtime.Handlers
 
             var compacted = new List<Item>(_inventory.Count);
 
-            foreach (var itemGroup in _inventory.GroupBy(i => i.ItemData))
+            foreach (var itemGroup in _inventory.GroupBy(i => i.Data))
             {
                 var maxStack = itemGroup.Key.maxStack;
                 if (maxStack <= 0) continue;
@@ -75,11 +120,14 @@ namespace Runtime.Handlers
 
             _inventory.Clear();
             _inventory.AddRange(compacted);
+            
+            // If current item index is not valid, reset selection
+            if (currentItemIndex >= _inventory.Count) SwitchItem(currentItemIndex);
         }
 
         private Item GetAmmo(AmmoType ammoType)
         {
-            return _inventory.Find(i => i.ItemData is Ammo a && a.ammoType == ammoType);
+            return _inventory.Find(i => i.Data is Ammo a && a.ammoType == ammoType);
         }
 
         public int TryAddItem(ItemData itemData, int quantity)
@@ -87,7 +135,7 @@ namespace Runtime.Handlers
             if (quantity <= 0) return 0;
 
             // Fill existing stacks first
-            foreach (var stack in _inventory.Where(i => i.ItemData == itemData).ToList())
+            foreach (var stack in _inventory.Where(i => i.Data == itemData).ToList())
             {
                 while (quantity > 0 && stack.TryStack())
                     quantity--;
@@ -101,7 +149,7 @@ namespace Runtime.Handlers
                 quantity -= stackSize;
             }
 
-            onInventoryChanged?.Invoke(_inventory, inventoryCapacity);
+            NotifyInventoryChanged();
 
             return quantity;
         }

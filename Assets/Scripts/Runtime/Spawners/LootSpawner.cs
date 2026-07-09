@@ -8,7 +8,8 @@ namespace Runtime.Spawners
     {
         // Configuration
         [SerializeField] private LayerMask lootLayer; // layer assigned to loot
-    
+        [SerializeField] private float collectDelay = 0.5f;
+
         // Singleton
         public static LootSpawner Instance { get; private set; }
 
@@ -19,16 +20,16 @@ namespace Runtime.Spawners
                 Destroy(gameObject);
                 return;
             }
+
             Instance = this;
         }
-    
+
         private void OnDestroy()
         {
             if (Instance == this)
                 Instance = null;
         }
-    
-        // Spawn
+        
         public void Spawn(ItemData itemData, int quantity, Vector3 position)
         {
             if (itemData.lootPrefab == null) return;
@@ -42,10 +43,10 @@ namespace Runtime.Spawners
                 Destroy(go);
                 return;
             }
-        
+
             go.transform.SetParent(transform);
             go.layer = Mathf.RoundToInt(Mathf.Log(lootLayer.value, 2));
-            loot.Init(itemData, quantity);
+            loot.Init(itemData, quantity, collectDelay);
         }
 
         public void SpawnFromDropTable(DropData[] dropTable, Vector3 position)
@@ -55,7 +56,10 @@ namespace Runtime.Spawners
                 if (drop.itemData == null) continue;
 
                 if (Random.value <= drop.chance)
+                {
                     Spawn(drop.itemData, drop.quantity, position);
+                    break;
+                }
             }
         }
     }
