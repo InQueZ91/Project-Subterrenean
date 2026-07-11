@@ -1772,6 +1772,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WaveManager
   waves:
   - {fileID: 11400000, guid: 9cf59643dc1818245a45f068484e60a0, type: 2}
+  - {fileID: 11400000, guid: 54bbce9527f10744ab0fb2eda27932f8, type: 2}
+  - {fileID: 11400000, guid: a9b7a34afc652d0459e0bbb71ffd99b8, type: 2}
   spawnPoints:
   - {fileID: 1608354348}
   - {fileID: 2076789242}
@@ -2346,7 +2348,7 @@ GameObject:
   - component: {fileID: 1788065257}
   - component: {fileID: 1788065258}
   m_Layer: 9
-  m_Name: MeleeSpawner
+  m_Name: HitboxSpawner
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2376,12 +2378,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1788065256}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d23b12de253e499dbda88e2e193a58aa, type: 3}
+  m_Script: {fileID: 11500000, guid: d2d7d29c0a584305a1e08f8c3e421274, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Runtime.Spawners.MeleeSpawner
-  hitMask:
-    serializedVersion: 2
-    m_Bits: 449
 --- !u!1 &1800327728
 GameObject:
   m_ObjectHideFlags: 0

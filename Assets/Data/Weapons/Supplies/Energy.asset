@@ -15,5 +15,5 @@ MonoBehaviour:
   stats:
     maxCharge: 100
     chargeRate: 30
-    firingCost: 4
+    firingCost: 2
     rechargeDelay: 0.4

@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 613a0a019aea4554bf9122674c298d7b, type: 3}
+  m_Name: Devil
+  m_EditorClassIdentifier: Assembly-CSharp::Data.EnemyData
+  unitStats:
+    maxHealth: 100
+    moveSpeed: 2
+    knockbackDecay: 8
+    knockbackResistance: 2
+  combatMoves:
+  - {fileID: 11400000, guid: ca8c617d5c16ef340bb405aeb25fe71e, type: 2}
+  rewards:
+    scoreValue: 2000
+    drops:
+    - itemData: {fileID: 11400000, guid: f720f900a20e5f04a9e8f139d46c6297, type: 2}
+      quantity: 1
+      chance: 0.5
+    - itemData: {fileID: 11400000, guid: ec204471351cc5840ba6a05fd927d56d, type: 2}
+      quantity: 2
+      chance: 0.5

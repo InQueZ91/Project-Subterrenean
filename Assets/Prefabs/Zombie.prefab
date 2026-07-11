@@ -66,7 +66,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: 59f7ca64a80035343b40e108721b2887, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -139,6 +139,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 926c1f0889bd4fea996dc31912e3cd90, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Billboard
+--- !u!1 &2129305292691218613
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5853205306818409427}
+  m_Layer: 6
+  m_Name: FiringPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5853205306818409427
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2129305292691218613}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.8, z: 0.6}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5643748959569807644}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4582106785990915923
 GameObject:
   m_ObjectHideFlags: 0
@@ -153,7 +184,7 @@ GameObject:
   - component: {fileID: 2801631193529812166}
   - component: {fileID: 5763380966857887993}
   m_Layer: 6
-  m_Name: TestEnemy
+  m_Name: Zombie
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -236,6 +267,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyController
   data: {fileID: 11400000, guid: fba385b14f2d9194f8996e5a5bee9be4, type: 2}
+  firingPoint: {fileID: 5853205306818409427}
   onDied:
     m_PersistentCalls:
       m_Calls: []
@@ -267,6 +299,9 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   onDamageTaken:
+    m_PersistentCalls:
+      m_Calls: []
+  onHealed:
     m_PersistentCalls:
       m_Calls: []
   onDied:
@@ -302,6 +337,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4956831070904236404}
+  - {fileID: 5853205306818409427}
   m_Father: {fileID: 607143402236192109}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &9004249393703335759

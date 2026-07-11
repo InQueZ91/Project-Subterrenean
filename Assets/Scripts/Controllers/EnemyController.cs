@@ -1,6 +1,8 @@
 using Data;
+using Data.CombatMove;
 using Data.Stats;
 using Runtime;
+using Runtime.Handlers;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Events;
@@ -12,17 +14,16 @@ namespace Controllers
     public class EnemyController : MonoBehaviour
     {
         [SerializeField] private EnemyData data;
-    
+        [SerializeField] private Transform firingPoint;
+        
         // References
         private NavMeshAgent _navAgent;
         private Transform _target;
         private Unit _unit;
+        private EnemyAttackHandler _attackHandler;
         
         // State
-        private float _attackTimer;
         private Vector3 _knockbackVelocity;
-        private CombatMoveData _activeCombatMove;
-        private bool _inCombat;
 
         [Header("Events")] 
         public UnityEvent<RewardStats, Vector3> onDied;
@@ -31,6 +32,7 @@ namespace Controllers
         {
             _unit = GetComponent<Unit>();
             _navAgent = GetComponent<NavMeshAgent>();
+            _attackHandler = new EnemyAttackHandler();
         }
 
         private void Start()
@@ -58,12 +60,23 @@ namespace Controllers
             if (HandleKnockback()) return;
             if (_target == null) return;
 
+            if (_attackHandler.IsAttacking)
+            {
+                // Committed to an attack cycle - direction re-resolves each
+                // tick so the hit lands toward wherever the target currently
+                // is, not where it was at commit time.
+                var direction = (_target.position - transform.position).normalized;
+                _attackHandler.Tick(Time.deltaTime, firingPoint.position, direction, gameObject);
+                return;
+            }
+
             var dist = Vector3.Distance(transform.position, _target.position);
             var move = GetMoveForDistance(dist);
 
             if (move == null) { HandleChase(); return; }
 
-            HandleCombat(move, dist);
+            _navAgent.ResetPath();
+            _attackHandler.BeginAttack(move);
         }
         
         private bool HandleKnockback()
@@ -82,34 +95,12 @@ namespace Controllers
 
         private void HandleChase()
         {
-            _inCombat = false;
-            _activeCombatMove = null;
             _navAgent.SetDestination(_target.position);
-        }
-
-        private void HandleCombat(CombatMoveData move, float dist)
-        {
-            if (!_inCombat)
-            {
-                _inCombat = true;
-                _activeCombatMove = move;
-                _navAgent.ResetPath();
-            }
-
-            _attackTimer -= Time.deltaTime;
-            if (_attackTimer > 0f) return;
-
-            var knockbackDir = (_target.position - transform.position - Vector3.up * 0.3f).normalized;
-            _target.GetComponent<IDamageable>()
-                ?.TakeDamage(_activeCombatMove.damage, knockbackDir * _activeCombatMove.knockbackStrength);
-
-            _attackTimer = _activeCombatMove.cooldown;
-            _activeCombatMove = GetMoveForDistance(dist);
         }
 
         private CombatMoveData GetMoveForDistance(float dist)
         {
-            var inRange = System.Array.FindAll(data.combatMoves, m => dist <= m.range);
+            var inRange = System.Array.FindAll(data.combatMoves, m => dist <= m.activeRange);
             return inRange.Length == 0 ? null : inRange[Random.Range(0, inRange.Length)];
         }
         
@@ -119,6 +110,13 @@ namespace Controllers
         {
             _knockbackVelocity = knockback / data.unitStats.knockbackResistance;
             _navAgent.ResetPath();
+
+            var move = _attackHandler.ActiveMove;
+            if (_attackHandler.IsAttacking && move != null && move.isInterruptable)
+            {
+                if (knockback.magnitude >= move.interruptThreshold)
+                    _attackHandler.Interrupt();
+            }
         }
     }
 }

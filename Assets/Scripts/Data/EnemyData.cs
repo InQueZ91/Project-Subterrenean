@@ -1,4 +1,5 @@
-﻿using Data.Stats;
+﻿using Data.CombatMove;
+using Data.Stats;
 using UnityEngine;
 
 namespace Data

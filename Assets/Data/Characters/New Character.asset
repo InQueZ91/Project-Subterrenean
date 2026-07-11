@@ -18,7 +18,6 @@ MonoBehaviour:
     knockbackDecay: 8
     knockbackResistance: 1
   startingWeapons:
-  - {fileID: 11400000, guid: 4ba9ac75e0a78e140b8d5dbe3e897012, type: 2}
   - {fileID: 11400000, guid: 7c6074bdfd0158446839526e90bd8645, type: 2}
   - {fileID: 11400000, guid: 048303dcf9e2e684a86f6332047890b2, type: 2}
   - {fileID: 11400000, guid: 26412f7b8eb220d4f8a39342cf6ed872, type: 2}

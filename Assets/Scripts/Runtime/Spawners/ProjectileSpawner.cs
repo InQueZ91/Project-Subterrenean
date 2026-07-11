@@ -35,25 +35,25 @@ namespace Runtime.Spawners
 
         // Spawn / Return
         public void Spawn(
-            ProjectileData data,
+            ProjectileOutputData outputData,
             ProjectileStats modifiedStats,
             Vector3 origin,
             Vector3 direction,
             GameObject owner)
         {
-            if (data.prefab == null)
+            if (outputData.prefab == null)
             {
                 Debug.LogWarning("ProjectileSpawner: missing prefab.");
                 return;
             }
         
-            var go = GetFromPool(data.prefab);
+            var go = GetFromPool(outputData.prefab);
             go.transform.SetPositionAndRotation(origin, Quaternion.LookRotation(direction));
             go.layer = Mathf.RoundToInt(Mathf.Log(projectileLayer.value, 2));
             go.SetActive(true);
 
             var p = go.GetComponent<Projectile>();
-            p.Init(data.prefab, modifiedStats, data.hitEffects, direction, owner, hitMask);
+            p.Init(outputData.prefab, modifiedStats, outputData.hitEffects, direction, owner, hitMask);
         }
 
         public void Return(GameObject go, GameObject prefab)

@@ -18,7 +18,7 @@ MonoBehaviour:
     knockbackDecay: 6
     knockbackResistance: 1
   combatMoves:
-  - {fileID: 11400000, guid: 007fc9a32eea913429616073c8b6a71b, type: 2}
+  - {fileID: 11400000, guid: 042c2aaee489bca4786675179871dbfd, type: 2}
   rewards:
     scoreValue: 500
     drops:
@@ -33,13 +33,13 @@ MonoBehaviour:
       chance: 0.1
     - itemData: {fileID: 11400000, guid: 27c9da781c57ccc4d81df26c6c571530, type: 2}
       quantity: 1
-      chance: 0.5
+      chance: 0.2
     - itemData: {fileID: 11400000, guid: ddf805a02559edd41a5a75971f9838eb, type: 2}
       quantity: 1
-      chance: 0.5
+      chance: 0.2
     - itemData: {fileID: 11400000, guid: 9d43ca7e71b00844196b676bf0fbbabd, type: 2}
       quantity: 1
-      chance: 0.5
+      chance: 0.2
     - itemData: {fileID: 11400000, guid: f720f900a20e5f04a9e8f139d46c6297, type: 2}
       quantity: 1
-      chance: 0.5
+      chance: 0.2
