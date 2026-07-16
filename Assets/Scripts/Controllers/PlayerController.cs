@@ -48,8 +48,10 @@ namespace Controllers
 
         private void Start()
         {
-            _unit.onDamageTaken.AddListener(OnDamageTaken);
             _unit.Init(data.unitStats);
+            _unit.onDamageTaken.AddListener(OnDamageTaken);
+            _unit.onDied.AddListener(OnDied);
+            
             _weaponHandler.Init(data.startingWeapons);
             _inventoryHandler.Init(data.startingItems);
             
@@ -85,6 +87,11 @@ namespace Controllers
             // Flatten knockback to XZ — Y component causes floating with CharacterController
             knockback.y = 0f;
             _knockbackVelocity = knockback / data.unitStats.knockbackResistance;
+        }
+
+        private void OnDied()
+        {
+            Debug.Log("Player has died.");
         }
 
         // Movement
@@ -126,7 +133,7 @@ namespace Controllers
             transform.rotation = Quaternion.RotateTowards(
                 transform.rotation,
                 Quaternion.LookRotation(dir),
-                data.rotationSpeed * Time.deltaTime
+                data.unitStats.rotationSpeed * Time.deltaTime
             );
         }
 

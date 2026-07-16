@@ -28,9 +28,9 @@ namespace Runtime
             CurrentHealth = Mathf.Min(_stats.maxHealth, CurrentHealth + amount);
             onHealthChanged?.Invoke(CurrentHealth / _stats.maxHealth);
             onHealed?.Invoke(amount);
+            
+            if (CurrentHealth > 0f && _isDead) _isDead = false; 
         }
-        
-        // Damage
         public void TakeDamage(float amount, Vector3 knockback)
         {
             CurrentHealth = Mathf.Max(0f, CurrentHealth - amount);
@@ -39,13 +39,14 @@ namespace Runtime
         
             if (CurrentHealth <= 0f) Die();
         }
+        
         public void Die()
         {
             if (_isDead) return;
             
             _isDead = true;
             onDied?.Invoke();
-            Destroy(gameObject, 0.1f);
+            // Destroy(gameObject, 0.1f);
         }
     }
 }

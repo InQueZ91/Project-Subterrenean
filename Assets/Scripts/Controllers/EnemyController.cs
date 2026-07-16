@@ -104,7 +104,11 @@ namespace Controllers
             return inRange.Length == 0 ? null : inRange[Random.Range(0, inRange.Length)];
         }
         
-        private void OnDied() => onDied?.Invoke(data.rewards, transform.position);
+        private void OnDied()
+        {
+            onDied?.Invoke(data.rewards, transform.position);
+            Destroy(gameObject, 0.2f);
+        }
 
         private void OnDamageTaken(float amount, Vector3 knockback)
         {

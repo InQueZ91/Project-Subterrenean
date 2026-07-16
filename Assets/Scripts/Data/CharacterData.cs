@@ -9,6 +9,5 @@ namespace Data
         public UnitStats unitStats;
         public WeaponData[] startingWeapons;
         public StartingItemData[] startingItems;
-        public float rotationSpeed = 720f;
     }
 }

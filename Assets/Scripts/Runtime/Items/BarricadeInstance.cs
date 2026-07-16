@@ -5,6 +5,8 @@ using UnityEngine.AI;
 namespace Runtime.Items
 {
     [RequireComponent(typeof(Unit))]
+    [RequireComponent(typeof(Collider))]
+    [RequireComponent(typeof(Rigidbody))]
     [RequireComponent(typeof(NavMeshObstacle))]
     public class BarricadeInstance : MonoBehaviour
     {

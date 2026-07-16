@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 835492377502985031}
   - component: {fileID: 5034203226334425125}
   - component: {fileID: 3568851721056770143}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Sphere
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -99,7 +99,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5853320059848681490}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -115,7 +115,7 @@ Transform:
   m_GameObject: {fileID: 1568260272998479097}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.17, z: 0}
+  m_LocalPosition: {x: 0, y: 0.249, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -134,7 +134,7 @@ GameObject:
   - component: {fileID: 8349363788841780197}
   - component: {fileID: 2926175751116614929}
   - component: {fileID: 1711929345881678877}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: FrontBody
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -224,7 +224,7 @@ GameObject:
   - component: {fileID: 8601492064687370261}
   - component: {fileID: 6076220581254423551}
   - component: {fileID: 7552871734615358788}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Sphere
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -314,7 +314,7 @@ GameObject:
   - component: {fileID: 6100887701301750253}
   - component: {fileID: 4919785154947123043}
   - component: {fileID: 4782516004149763536}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: LeftLeg (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -404,7 +404,7 @@ GameObject:
   - component: {fileID: 2301675482451375741}
   - component: {fileID: 7160201732560392790}
   - component: {fileID: 219582521886018977}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: RLeg
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -492,7 +492,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7217440596237800967}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: LeftLeg
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -508,7 +508,7 @@ Transform:
   m_GameObject: {fileID: 4932772170107498994}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.2, y: 0, z: 0}
+  m_LocalPosition: {x: 0.2, y: 0.078999996, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -528,7 +528,7 @@ GameObject:
   - component: {fileID: 6207792944579240315}
   - component: {fileID: 7806114736988589268}
   - component: {fileID: 4969574889196950100}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -618,7 +618,7 @@ GameObject:
   - component: {fileID: 7558033660500402184}
   - component: {fileID: 4021317403085888265}
   - component: {fileID: 4047612466224670522}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: LeftLeg
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -706,7 +706,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4832707472275378339}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: RightLeg
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -722,7 +722,7 @@ Transform:
   m_GameObject: {fileID: 6456085141339815222}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.2, y: 0, z: 0}
+  m_LocalPosition: {x: -0.2, y: 0.078999996, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -744,7 +744,8 @@ GameObject:
   - component: {fileID: 3642883517173028572}
   - component: {fileID: 2565336102940182788}
   - component: {fileID: 1468319477782500790}
-  m_Layer: 0
+  - component: {fileID: 3532596827886864994}
+  m_Layer: 10
   m_Name: Claymore
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -898,6 +899,33 @@ MonoBehaviour:
   m_ShadowLayerMask: 1
   m_RenderingLayers: 1
   m_ShadowRenderingLayers: 1
+--- !u!54 &3532596827886864994
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6563199809735589973}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &8468621775341084390
 GameObject:
   m_ObjectHideFlags: 0
@@ -909,7 +937,7 @@ GameObject:
   - component: {fileID: 3733806017688452244}
   - component: {fileID: 2412668955408064390}
   - component: {fileID: 8464592254403390057}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: RLeg
   m_TagString: Untagged
   m_Icon: {fileID: 0}

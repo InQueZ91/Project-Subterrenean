@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6873986495181990688}
   - component: {fileID: 4461134485179455583}
   - component: {fileID: 7584047165045488154}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Top
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -99,7 +99,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4096914936686178307}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Models
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -136,7 +136,7 @@ GameObject:
   - component: {fileID: 8608757704016893846}
   - component: {fileID: 834392172881805134}
   - component: {fileID: 2282434337848694955}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Top2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -227,7 +227,7 @@ GameObject:
   - component: {fileID: 905667890769771945}
   - component: {fileID: 8834869502192708022}
   - component: {fileID: 4900722686757183271}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: FragGrenade
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -323,7 +323,7 @@ GameObject:
   - component: {fileID: 7088910225995631702}
   - component: {fileID: 2780210551226389193}
   - component: {fileID: 5103223076758689513}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Handle3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -413,7 +413,7 @@ GameObject:
   - component: {fileID: 5689086581456075087}
   - component: {fileID: 6589271487950410711}
   - component: {fileID: 7842109813439083143}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Handle1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -503,7 +503,7 @@ GameObject:
   - component: {fileID: 1703448366998324958}
   - component: {fileID: 553397520937197494}
   - component: {fileID: 8524061550932063664}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Handle2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -591,7 +591,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7845448849939115021}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Handle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -627,7 +627,7 @@ GameObject:
   - component: {fileID: 8599856507730913086}
   - component: {fileID: 1777857310328341294}
   - component: {fileID: 5946364551197109876}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}

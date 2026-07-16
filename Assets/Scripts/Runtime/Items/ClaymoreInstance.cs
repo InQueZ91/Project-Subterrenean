@@ -5,6 +5,7 @@ using UnityEngine;
 namespace Runtime.Items
 {
     [RequireComponent(typeof(Light))]
+    [RequireComponent(typeof(Rigidbody))]
     [RequireComponent(typeof(SphereCollider))]
     public class ClaymoreInstance : MonoBehaviour
     {

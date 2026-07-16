@@ -20,6 +20,7 @@ MonoBehaviour:
   unitStats:
     maxHealth: 1
     moveSpeed: 0
+    rotationSpeed: 0
     knockbackDecay: 0
     knockbackResistance: 0
   damageStats:

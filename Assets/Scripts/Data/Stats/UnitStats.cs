@@ -7,6 +7,7 @@ namespace Data.Stats
     {
         public float maxHealth;
         public float moveSpeed;
+        public float rotationSpeed;
         public float knockbackDecay;
         public float knockbackResistance;
     }
