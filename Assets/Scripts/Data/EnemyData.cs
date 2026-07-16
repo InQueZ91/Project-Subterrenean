@@ -8,6 +8,8 @@ namespace Data
     public class EnemyData : ScriptableObject
     {
         public UnitStats unitStats;
+        public float visionAngle = 30f;
+        
         // Behavior
         public CombatMoveData[] combatMoves;
         public RewardStats rewards;

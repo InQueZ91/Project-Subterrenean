@@ -1,3 +1,4 @@
+using System.Linq;
 using Data;
 using Data.CombatMove;
 using Data.Stats;
@@ -10,17 +11,17 @@ using UnityEngine.Events;
 namespace Controllers
 {
     [RequireComponent(typeof(Unit))]
-    [RequireComponent(typeof(NavMeshAgent))]
+    [RequireComponent(typeof(EnemyMovementHandler))]
     public class EnemyController : MonoBehaviour
     {
         [SerializeField] private EnemyData data;
         [SerializeField] private Transform firingPoint;
         
         // References
-        private NavMeshAgent _navAgent;
         private Transform _target;
         private Unit _unit;
         private EnemyAttackHandler _attackHandler;
+        private EnemyMovementHandler _movementHandler;
         
         // State
         private Vector3 _knockbackVelocity;
@@ -31,19 +32,18 @@ namespace Controllers
         private void Awake()
         {
             _unit = GetComponent<Unit>();
-            _navAgent = GetComponent<NavMeshAgent>();
             _attackHandler = new EnemyAttackHandler();
+            _movementHandler = GetComponent<EnemyMovementHandler>();
         }
 
         private void Start()
         {
-            _navAgent.speed = data.unitStats.moveSpeed;
             _unit.Init(data.unitStats);
             _unit.onDamageTaken.AddListener(OnDamageTaken);
             _unit.onDied.AddListener(OnDied);
+            
+            _movementHandler.Init(data.unitStats);
         
-            // For now: find the player directly.
-            // Later: EnemyManager will assign targets
             var player = GameObject.FindWithTag("Player");
             if (player != null) _target = player.transform;
         }
@@ -56,53 +56,58 @@ namespace Controllers
 
         private void Update()
         {
-            if (!_navAgent.isOnNavMesh) return;
-            if (HandleKnockback()) return;
             if (_target == null) return;
+            
+            if (_movementHandler.IsStaggered()) return;
 
             if (_attackHandler.IsAttacking)
             {
-                // Committed to an attack cycle - direction re-resolves each
-                // tick so the hit lands toward wherever the target currently
-                // is, not where it was at commit time.
                 var direction = (_target.position - transform.position).normalized;
                 _attackHandler.Tick(Time.deltaTime, firingPoint.position, direction, gameObject);
                 return;
             }
 
-            var dist = Vector3.Distance(transform.position, _target.position);
-            var move = GetMoveForDistance(dist);
+            HandleMoveSelection();
+        }
 
-            if (move == null) { HandleChase(); return; }
+        #region Move Selection
 
-            _navAgent.ResetPath();
-            _attackHandler.BeginAttack(move);
+        private void HandleMoveSelection()
+        {
+            var candidates = data.combatMoves.ToList().FindAll(IsInRange);
+            var selectedMove = candidates.Count == 0 ? null : candidates[Random.Range(0, candidates.Count)];
+
+            if (selectedMove == null)
+            {
+                _movementHandler.MoveTo(_target.position);
+                return;
+            }
+            
+            _movementHandler.Stop();
+            _attackHandler.BeginAttack(selectedMove);
         }
         
-        private bool HandleKnockback()
+        private bool IsInRange(CombatMoveData move)
         {
-            _knockbackVelocity = Vector3.MoveTowards(
-                _knockbackVelocity,
-                Vector3.zero,
-                data.unitStats.knockbackDecay * Time.deltaTime
-            );
+            if (move == null) return false;
 
-            if (_knockbackVelocity.sqrMagnitude <= 0.01f) return false;
-
-            _navAgent.Move(_knockbackVelocity * Time.deltaTime);
-            return true;
+            var distanceToTarget = Vector3.Distance(transform.position, _target.position);
+            return distanceToTarget <= move.activeRange && IsFacingTarget();
+        }
+        
+        private bool IsFacingTarget()
+        {
+            var directionToTarget = (_target.position - transform.position).normalized;
+            directionToTarget.y = 0f;
+    
+            var forward = transform.forward;
+            forward.y = 0f;
+    
+            var angle = Vector3.Angle(forward.normalized, directionToTarget);
+            return angle <= data.visionAngle;
         }
 
-        private void HandleChase()
-        {
-            _navAgent.SetDestination(_target.position);
-        }
-
-        private CombatMoveData GetMoveForDistance(float dist)
-        {
-            var inRange = System.Array.FindAll(data.combatMoves, m => dist <= m.activeRange);
-            return inRange.Length == 0 ? null : inRange[Random.Range(0, inRange.Length)];
-        }
+        #endregion
         
         private void OnDied()
         {
@@ -112,8 +117,7 @@ namespace Controllers
 
         private void OnDamageTaken(float amount, Vector3 knockback)
         {
-            _knockbackVelocity = knockback / data.unitStats.knockbackResistance;
-            _navAgent.ResetPath();
+            _movementHandler.ApplyKnockback(knockback, data.unitStats.knockbackResistance);
 
             var move = _attackHandler.ActiveMove;
             if (_attackHandler.IsAttacking && move != null && move.isInterruptable)

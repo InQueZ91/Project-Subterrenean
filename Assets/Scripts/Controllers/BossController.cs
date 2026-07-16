@@ -12,7 +12,7 @@ using UnityEngine.Events;
 namespace Controllers
 {
     [RequireComponent(typeof(Unit))]
-    [RequireComponent(typeof(NavMeshAgent))]
+    [RequireComponent(typeof(EnemyMovementHandler))]
     public class BossController : MonoBehaviour
     {
         [SerializeField] private BossData data;
