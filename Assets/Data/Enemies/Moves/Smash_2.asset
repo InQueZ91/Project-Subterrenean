@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3c056e9d559c4db499e73386425764b7, type: 3}
+  m_Name: Smash_2
+  m_EditorClassIdentifier: Assembly-CSharp::Data.CombatMove.MeleeMoveData
+  activeRange: 5
+  cooldown: 2
+  hitWindowStart: 0.5
+  hitWindowEnd: 0.6
+  isInterruptable: 0
+  interruptThreshold: 0
+  hitMask:
+    serializedVersion: 2
+    m_Bits: 256
+  damage:
+    damage: 20
+    knockback: 2
+  hitEffects:
+  - {fileID: 11400000, guid: d3ee4eda1bc325e4c8d9e121cfecabec, type: 2}
+  hitboxDistance: 0
+  hitboxRadius: 2

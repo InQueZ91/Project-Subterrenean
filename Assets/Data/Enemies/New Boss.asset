@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf0186fcfb5043be8cf0ad855698f3ba, type: 3}
+  m_Name: New Boss
+  m_EditorClassIdentifier: Assembly-CSharp::Data.Bosses.BossData
+  unitStats:
+    maxHealth: 2000
+    moveSpeed: 2.5
+    rotationSpeed: 80
+    knockbackDecay: 16
+    knockbackResistance: 4
+  rewards:
+    scoreValue: 5000
+    drops: []
+  visionAngle: 30
+  normalMove: {fileID: 11400000, guid: 60a99314fd438a14a86ddaf612786ec8, type: 2}
+  enrageHealthPercent: 0.75
+  chargeMove: {fileID: 11400000, guid: 07b7c23724165264689875ecdaa3da30, type: 2}
+  rangeMove: {fileID: 11400000, guid: 8d39dc8ca096294448aea92a023649ca, type: 2}
+  ultimateHealthThresholds:
+  - 0.75
+  - 0.5
+  superSlamStages:
+  - {fileID: 11400000, guid: 3d11d06cb5b71174d9d13ea7ca77e0b1, type: 2}
+  - {fileID: 11400000, guid: 88d6a6650d2c75a49ad17df089e742a4, type: 2}
+  - {fileID: 11400000, guid: 921860e57057adc428e037345a61da55, type: 2}

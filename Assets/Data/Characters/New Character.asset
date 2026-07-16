@@ -15,6 +15,7 @@ MonoBehaviour:
   unitStats:
     maxHealth: 100
     moveSpeed: 5
+    rotationSpeed: 720
     knockbackDecay: 8
     knockbackResistance: 1
   startingWeapons:
@@ -27,9 +28,8 @@ MonoBehaviour:
   - itemData: {fileID: 11400000, guid: 86e62e2bb6672974ab3f269e41bba7c3, type: 2}
     quantity: 8
   - itemData: {fileID: 11400000, guid: ddf805a02559edd41a5a75971f9838eb, type: 2}
-    quantity: 12
+    quantity: 6
   - itemData: {fileID: 11400000, guid: 9d43ca7e71b00844196b676bf0fbbabd, type: 2}
     quantity: 12
   - itemData: {fileID: 11400000, guid: 27c9da781c57ccc4d81df26c6c571530, type: 2}
-    quantity: 1
-  rotationSpeed: 720
+    quantity: 10

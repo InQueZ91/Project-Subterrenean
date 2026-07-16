@@ -10,23 +10,21 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3c056e9d559c4db499e73386425764b7, type: 3}
-  m_Name: Smash
+  m_Name: Slam_2
   m_EditorClassIdentifier: Assembly-CSharp::Data.CombatMove.MeleeMoveData
-  activeRange: 1.6
-  cooldown: 1
-  hitWindowStart: 0.3
-  hitWindowEnd: 0.35
+  activeRange: 0
+  cooldown: 2
+  hitWindowStart: 1.5
+  hitWindowEnd: 2
   isInterruptable: 0
   interruptThreshold: 0
-  visualPrefab: {fileID: 0}
-  sfx: {fileID: 0}
   hitMask:
     serializedVersion: 2
-    m_Bits: 256
+    m_Bits: 320
   damage:
-    damage: 10
-    knockback: 2
+    damage: 15
+    knockback: 8
   hitEffects:
   - {fileID: 11400000, guid: d3ee4eda1bc325e4c8d9e121cfecabec, type: 2}
-  hitboxDistance: 1.2
-  hitboxRadius: 0.6
+  hitboxDistance: 0
+  hitboxRadius: 10

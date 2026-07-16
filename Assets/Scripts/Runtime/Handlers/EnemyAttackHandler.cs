@@ -5,11 +5,10 @@ using UnityEngine;
 namespace Runtime.Handlers
 {
     /// <summary>
-    /// Owns a single enemy's attack-cycle state machine: windup => hit window => recovery.
-    /// Driven off one accumulating clock rather than per-state timers.
-    /// Plain C# class, composed by EnemyController (or later, Boss Controller) -
-    /// no MonoBehaviour lifecycle of its own. Caller drives it via Tick() each frame and owns
-    ///  the actual NavMeshAgent/movement/targeting decisions.
+    /// Owns one enemy attack-cycle state machine (windup, hit window, recovery)
+    /// driven by a single accumulated clock. It is a plain C# class composed by
+    /// EnemyController and advanced each frame via Tick(),
+    /// while the caller handles movement, targeting, and NavMeshAgent decisions.
     /// </summary>
     public class EnemyAttackHandler
     {
@@ -26,6 +25,7 @@ namespace Runtime.Handlers
         private float _attackTime;
         private AttackState _attackState;
         private bool _hasExecutedThisWindow;
+        private bool _externalCompletionFlag;
 
         public event Action<CombatMoveData> OnWindupStarted;
         public event Action<CombatMoveData> OnHitWindowStarted;
@@ -38,11 +38,20 @@ namespace Runtime.Handlers
             ActiveMove = move;
             _attackTime = 0f;
             _hasExecutedThisWindow = false;
-
+            _externalCompletionFlag = false;
+            
             _attackState = AttackState.WindingUp;
             OnWindupStarted?.Invoke(move);
         }
-
+        
+        /// <summary>
+        /// Called by whatever drives a move externally (e.g., BossController during a Charge)
+        /// to report that the move has actually finished, for move whose IsExecutionComplete()
+        /// override reads this flag instead of relying on hitWindowEnd. No-op for moves that ignore it.
+        /// </summary>
+        public void ReportExternalCompletion(bool complete) 
+            => _externalCompletionFlag = complete; 
+        
         /// <summary>
         /// Advances the attack clock. Origin/Direction/Owner are only needed
         /// at the moment the hit window opens, so they're passed in rather
@@ -57,7 +66,6 @@ namespace Runtime.Handlers
             _attackTime += deltaTime;
 
             var computedState = ComputeState(move, _attackTime);
-
             if (computedState != _attackState)
             {
                 _attackState = computedState;
@@ -72,13 +80,14 @@ namespace Runtime.Handlers
                 }
             }
 
+            // Execute normal move after hit window end
             if (_attackState == AttackState.HitWindowActive && !_hasExecutedThisWindow)
             {
                 move.Execute(origin, direction, owner);
                 _hasExecutedThisWindow = true;
             }
 
-            if (_attackTime >= move.cooldown)
+            if (_attackTime >= move.cooldown && _attackState != AttackState.HitWindowActive)
             {
                 EndAttack();
             }
@@ -112,10 +121,10 @@ namespace Runtime.Handlers
             _attackTime = 0f;
         }
 
-        private static AttackState ComputeState(CombatMoveData move, float attackTime)
+        private AttackState ComputeState(CombatMoveData move, float attackTime)
         {
             if (attackTime < move.hitWindowStart) return AttackState.WindingUp;
-            if (attackTime <= move.hitWindowEnd) return AttackState.HitWindowActive;
+            if (!move.IsExecutionComplete(attackTime, _externalCompletionFlag)) return AttackState.HitWindowActive;
             return AttackState.Recovering;
         }
     }

@@ -165,7 +165,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Runtime.BeamSpawner
   hitMask:
     serializedVersion: 2
-    m_Bits: 449
+    m_Bits: 1472
   beamRendererPrefab: {fileID: 7545413636022982932, guid: 7ab6f58a158a4dd4f82588514ab8637d, type: 3}
   prewarmCount: 4
 --- !u!1 &83087874
@@ -1771,9 +1771,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WaveManager
   waves:
-  - {fileID: 11400000, guid: 9cf59643dc1818245a45f068484e60a0, type: 2}
-  - {fileID: 11400000, guid: 54bbce9527f10744ab0fb2eda27932f8, type: 2}
-  - {fileID: 11400000, guid: a9b7a34afc652d0459e0bbb71ffd99b8, type: 2}
+  - {fileID: 11400000, guid: 8a2e4ef246f2b624e97a613aef9d18d3, type: 2}
   spawnPoints:
   - {fileID: 1608354348}
   - {fileID: 2076789242}
@@ -2089,6 +2087,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 5573527184845905665, guid: d52b0af7963ccab4ebe102c1b70a017b, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6031920894601449249, guid: d52b0af7963ccab4ebe102c1b70a017b, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -2381,6 +2383,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d2d7d29c0a584305a1e08f8c3e421274, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Runtime.Spawners.MeleeSpawner
+  gizmosOn: 1
 --- !u!1 &1800327728
 GameObject:
   m_ObjectHideFlags: 0

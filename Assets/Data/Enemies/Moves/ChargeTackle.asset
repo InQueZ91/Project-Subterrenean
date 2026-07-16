@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 626b8ece9d574a22b9b16984cc8d8430, type: 3}
+  m_Name: ChargeTackle
+  m_EditorClassIdentifier: Assembly-CSharp::Data.CombatMove.ChargeMoveData
+  activeRange: 20
+  cooldown: 3
+  hitWindowStart: 0.2
+  hitWindowEnd: 0.3
+  isInterruptable: 0
+  interruptThreshold: 0
+  speed: 12
+  arrivalThreshold: 0.4
+  hitBoxRadius: 2.4
+  damageStats:
+    damage: 20
+    knockback: 10
+  hitEffects:
+  - {fileID: 11400000, guid: d3ee4eda1bc325e4c8d9e121cfecabec, type: 2}
+  obstacleDestroyMask:
+    serializedVersion: 2
+    m_Bits: 1024

@@ -10,12 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1aca3bec337846f1846f77beebf66c35, type: 3}
-  m_Name: FireBall
+  m_Name: Rockthrow
   m_EditorClassIdentifier: Assembly-CSharp::Data.CombatMove.RangeMoveData
-  activeRange: 12
+  activeRange: 15
   cooldown: 3
   hitWindowStart: 0.5
-  hitWindowEnd: 0.6
-  isInterruptable: 1
+  hitWindowEnd: 0.8
+  isInterruptable: 0
   interruptThreshold: 2
-  projectileOutput: {fileID: 11400000, guid: 203d9e30fd05d4b409ab3244aa11897d, type: 2}
+  projectileOutput: {fileID: 11400000, guid: 687b99e0666dfd54ca7700e41da2cac9, type: 2}
+  facingThreshold: 0.5

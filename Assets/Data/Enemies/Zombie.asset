@@ -15,6 +15,7 @@ MonoBehaviour:
   unitStats:
     maxHealth: 50
     moveSpeed: 2.5
+    rotationSpeed: 120
     knockbackDecay: 6
     knockbackResistance: 1
   combatMoves:

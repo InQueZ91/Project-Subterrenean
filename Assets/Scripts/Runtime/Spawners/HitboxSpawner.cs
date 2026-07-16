@@ -6,8 +6,20 @@ namespace Runtime.Spawners
 {
     public class HitboxSpawner : MonoBehaviour
     {
+        [SerializeField] private bool gizmosOn = true;
+        
         // Singleton
         public static HitboxSpawner Instance { get; private set; }
+        
+        private Vector3 _origin;
+        private float _radius;
+        private void OnDrawGizmos()
+        {
+            if (!gizmosOn) return;
+            
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireSphere(_origin, _radius);
+        }
 
         private void Awake()
         {
@@ -35,7 +47,9 @@ namespace Runtime.Spawners
             var normalizedDirection = data.Direction.normalized;
             var center = data.Origin + normalizedDirection * data.HitboxDistance;
             var hitCount = Physics.OverlapSphereNonAlloc(center, data.HitboxRadius, _hitBuffer, data.HitMask);
-
+            _origin = center;
+            _radius = data.HitboxRadius;
+            
             for (var i = 0; i < hitCount; i++)
             {
                 var victim = _hitBuffer[i].gameObject;

@@ -77,8 +77,8 @@ public class WaveManager : MonoBehaviour
         var go = Instantiate(wave.enemyPrefab, point.transform.position, Quaternion.identity);
         go.name = $"Enemy {_currentWaveIndex}-{_enemiesSpawned + 1}";
         go.transform.SetParent(transform);
-        var enemy = go.GetComponent<EnemyController>();
-        enemy.onDied.AddListener(OnEnemyDied);
+        var enemy = go.GetComponent<EnemyController>() ? go.GetComponent<BossController>() : null;
+        enemy?.onDied.AddListener(OnEnemyDied);
         
         _enemiesAlive++;
     }
