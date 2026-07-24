@@ -1,15 +1,16 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using Controllers;
-using Data;
 using Data.Stats;
+using Data.Wave;
 using Runtime.Spawners;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class WaveManager : MonoBehaviour
+public class WaveSpawner : MonoBehaviour
 {
     [Header("Setup")]
+    [SerializeField] private Vector3 playerSpawnPosition;
     [SerializeField] private List<WaveData> waves;
     [SerializeField] private List<SpawnPoint> spawnPoints;
 
@@ -24,13 +25,40 @@ public class WaveManager : MonoBehaviour
     private int _enemiesAlive;
     private int _enemiesSpawned;
 
+    // Singleton
+    public static WaveSpawner Instance { get; private set; }
+
+    private void Awake()
+    {
+        if (Instance != null)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        Instance = this;
+    }
+
+    private void OnDestroy()
+    {
+        if (Instance == this) Instance = null;
+    }
+
     private void Start()
     {
         StartCoroutine(RunWave(_currentWaveIndex));
     }
 
+    public void StartNextWave()
+    {
+        if (_currentWaveIndex >= waves.Count) return;
+        
+        _currentWaveIndex++;
+        StartCoroutine(RunWave(_currentWaveIndex));
+    }
+
     private IEnumerator RunWave(int index)
     {
+        // Check if all waves are cleared
         if (index >= waves.Count)
         {
             onAllWavesCleared?.Invoke();
@@ -42,19 +70,46 @@ public class WaveManager : MonoBehaviour
         // Countdown before wave
         yield return new WaitForSeconds(wave.timeBeforeWave);
         
+        // Reset state
         _enemiesAlive = 0;
         _enemiesSpawned = 0;
         onWaveStarted?.Invoke(index + 1);
         
-        // Trickle spawn
-        while (_enemiesSpawned < wave.enemyCount)
+        // Spawn enemies
+        var waveStartTime = Time.time;
+        var waveEndTime = waveStartTime + wave.waveDurationSecs;
+        var order = 0;
+        while (Time.time < waveEndTime)
         {
-            SpawnEnemy(wave);
-            _enemiesSpawned++;
-            onEnemySpawned?.Invoke(_enemiesSpawned, wave.enemyCount);
-
-            if (_enemiesSpawned < wave.enemyCount)
-                yield return new WaitForSeconds(wave.spawnInterval);
+            // Wait for wave reach end time
+            if (order >= wave.spawns.Length)
+            {
+                yield return null;
+                continue;
+            }
+            
+            var spawn = wave.spawns[order];
+            var timing = waveStartTime + spawn.timing * wave.waveDurationSecs;
+            if (Time.time > timing)
+            {
+                var spawnedThisOrder = 0;
+                while (spawnedThisOrder < spawn.count)
+                {
+                    SpawnEnemy(spawn.enemyPrefab);
+                    _enemiesSpawned++;
+                    spawnedThisOrder++;
+                    onEnemySpawned?.Invoke(_enemiesSpawned, spawn.count);
+                    
+                    if (spawnedThisOrder < spawn.count)
+                        yield return new WaitForSeconds(spawn.spawnInterval);
+                }
+                
+                order++;
+            }
+            else
+            {
+                yield return null;
+            }
         }
         
         // Wait until all enemies are dead
@@ -62,23 +117,33 @@ public class WaveManager : MonoBehaviour
             yield return null;
         
         onWaveCleared?.Invoke();
-        _currentWaveIndex++;
-        StartCoroutine(RunWave(_currentWaveIndex));
+        OnWaveCleared(wave);
     }
 
-    private void SpawnEnemy(WaveData wave)
+    private void OnWaveCleared(WaveData wave)
     {
-        if (spawnPoints.Count == 0) return;
+        // Spawn rewards at center of the map or spawn points
+        LootSpawner.Instance.SpawnFromDropTable(wave.itemRewardPool, playerSpawnPosition);
         
-        // Pick a random spawn point
+        // Start weapon mod rewards
+        // Another singleton but not implemented yet
+    }
+
+    private void SpawnEnemy(GameObject prefab)
+    {
+        if (spawnPoints.Count == 0)
+        {
+            Debug.LogError("No spawn points available!");
+            return;
+        }
+        
         var point = spawnPoints[Random.Range(0, spawnPoints.Count)];
         
-        // Spawn enemy
-        var go = Instantiate(wave.enemyPrefab, point.transform.position, Quaternion.identity);
+        var go = Instantiate(prefab, point.transform.position, Quaternion.identity);
         go.name = $"Enemy {_currentWaveIndex}-{_enemiesSpawned + 1}";
         go.transform.SetParent(transform);
-        var enemy = go.GetComponent<EnemyController>() ? go.GetComponent<BossController>() : null;
-        enemy?.onDied.AddListener(OnEnemyDied);
+        var enemy = go.GetComponent<IEnemy>();
+        enemy?.OnDied.AddListener(OnEnemyDied);
         
         _enemiesAlive++;
     }
