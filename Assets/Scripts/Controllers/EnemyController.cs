@@ -5,14 +5,13 @@ using Data.Stats;
 using Runtime;
 using Runtime.Handlers;
 using UnityEngine;
-using UnityEngine.AI;
 using UnityEngine.Events;
 
 namespace Controllers
 {
     [RequireComponent(typeof(Unit))]
     [RequireComponent(typeof(EnemyMovementHandler))]
-    public class EnemyController : MonoBehaviour
+    public class EnemyController : MonoBehaviour, IEnemy
     {
         [SerializeField] private EnemyData data;
         [SerializeField] private Transform firingPoint;
@@ -27,7 +26,7 @@ namespace Controllers
         private Vector3 _knockbackVelocity;
 
         [Header("Events")] 
-        public UnityEvent<RewardStats, Vector3> onDied;
+        public UnityEvent<RewardStats, Vector3> OnDied { get; } = new();
 
         private void Awake()
         {
@@ -38,9 +37,9 @@ namespace Controllers
 
         private void Start()
         {
-            _unit.Init(data.unitStats);
+            _unit.Init(data.unitStats.maxHealth);
             _unit.onDamageTaken.AddListener(OnDamageTaken);
-            _unit.onDied.AddListener(OnDied);
+            _unit.onDied.AddListener(OnDeath);
             
             _movementHandler.Init(data.unitStats);
         
@@ -51,7 +50,7 @@ namespace Controllers
         private void OnDisable()
         {
             _unit.onDamageTaken.RemoveListener(OnDamageTaken);
-            _unit.onDied.RemoveListener(OnDied);
+            _unit.onDied.RemoveListener(OnDeath);
         }
 
         private void Update()
@@ -109,9 +108,9 @@ namespace Controllers
 
         #endregion
         
-        private void OnDied()
+        private void OnDeath()
         {
-            onDied?.Invoke(data.rewards, transform.position);
+            OnDied?.Invoke(data.rewards, transform.position);
             Destroy(gameObject, 0.2f);
         }
 

@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Data.HitEffects.Explode
   hitVFX: {fileID: 0}
   isFriendlyFire: 1
-  radius: 10
-  falloff: 0
+  radius: 6
+  falloff: 0.5
   hitLayers:
     serializedVersion: 2
     m_Bits: 320

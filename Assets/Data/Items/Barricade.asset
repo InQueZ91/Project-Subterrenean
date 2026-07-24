@@ -12,13 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ead2fe2822c433499e2442d5a46ecca, type: 3}
   m_Name: Barricade
   m_EditorClassIdentifier: Assembly-CSharp::Data.Items.Barricade
-  isStackable: 1
-  maxStack: 10
+  itemStats:
+    maxStack: 4
+    isStackable: 1
   lootPrefab: {fileID: 4871147286282597990, guid: 5c29d2ae8fd57bb4e81f60194beb9364, type: 3}
   icon: {fileID: 21300000, guid: 0b7d68f320d9478418924629805e923b, type: 3}
   spawnPrefab: {fileID: 6563199809735589973, guid: 8039f2641befbaa4f9434fa5d8fc2cfd, type: 3}
-  stats:
-    maxHealth: 60
+  unitStats:
+    maxHealth: 200
     moveSpeed: 0
-    knockbackDecay: 10
-    knockbackResistance: 5
+    rotationSpeed: 0
+    knockbackDecay: 0
+    knockbackResistance: 0

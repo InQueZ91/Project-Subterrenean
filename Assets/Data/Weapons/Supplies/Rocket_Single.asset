@@ -15,4 +15,4 @@ MonoBehaviour:
   ammoType: 2
   stats:
     ammoCapacity: 1
-    reloadTime: 1
+    reloadTime: 10

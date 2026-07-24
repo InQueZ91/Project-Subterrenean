@@ -1,12 +1,11 @@
-﻿using UnityEngine;
+﻿using Data.Stats;
+using UnityEngine;
 
 namespace Data.Items
 {
     public abstract class ItemData : ScriptableObject
     {
-        [Header("Stats")]
-        public bool isStackable = true;
-        public int maxStack = 10;
+        public ItemStats itemStats;
         
         [Header("Visuals")]
         public GameObject lootPrefab;

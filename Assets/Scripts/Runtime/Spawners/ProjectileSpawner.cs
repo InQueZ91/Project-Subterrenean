@@ -53,7 +53,7 @@ namespace Runtime.Spawners
             go.SetActive(true);
 
             var p = go.GetComponent<Projectile>();
-            p.Init(outputData.prefab, modifiedStats, outputData.hitEffects, direction, owner, hitMask);
+            p.Init(outputData.prefab, modifiedStats, direction, owner, hitMask);
         }
 
         public void Return(GameObject go, GameObject prefab)

@@ -13,7 +13,7 @@ namespace Controllers
 {
     [RequireComponent(typeof(Unit))]
     [RequireComponent(typeof(EnemyMovementHandler))]
-    public class BossController : MonoBehaviour
+    public class BossController : MonoBehaviour, IEnemy
     {
         [SerializeField] private BossData data;
         [SerializeField] private Transform firingPoint;
@@ -48,8 +48,8 @@ namespace Controllers
         private bool _isCharging;
         private Vector3 _chargeDestination;
 
-        [Header("Events")] 
-        public UnityEvent<RewardStats, Vector3> onDied;
+        [Header("Events")]
+        public UnityEvent<RewardStats, Vector3> OnDied { get; } = new();
 
         private void Awake()
         {
@@ -64,10 +64,10 @@ namespace Controllers
 
         private void Start()
         {
-            _unit.Init(data.unitStats);
+            _unit.Init(data.unitStats.maxHealth);
             _unit.onHealthChanged.AddListener(OnHealthChanged);
             _unit.onDamageTaken.AddListener(OnDamageTaken);
-            _unit.onDied.AddListener(OnDied);
+            _unit.onDied.AddListener(OnDeath);
             
             _movementHandler.Init(data.unitStats);
             
@@ -84,7 +84,7 @@ namespace Controllers
         {
             _unit.onHealthChanged.RemoveListener(OnHealthChanged);
             _unit.onDamageTaken.RemoveListener(OnDamageTaken);
-            _unit.onDied.RemoveListener(OnDied);
+            _unit.onDied.RemoveListener(OnDeath);
 
             _attackHandler.OnWindupStarted -= OnMoveWindupStarted;
             _attackHandler.OnRecoveryStarted -= OnMoveRecoveryStarted;
@@ -302,9 +302,9 @@ namespace Controllers
                 shield?.SetRaised(true);
         }
  
-        private void OnDied()
+        private void OnDeath()
         {
-            onDied?.Invoke(data.rewards, transform.position);
+            OnDied?.Invoke(data.rewards, transform.position);
             Destroy(gameObject, 0.2f);
         }
 

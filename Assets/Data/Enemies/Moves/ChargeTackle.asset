@@ -19,7 +19,7 @@ MonoBehaviour:
   isInterruptable: 0
   interruptThreshold: 0
   speed: 12
-  arrivalThreshold: 0.4
+  arrivalThreshold: 1
   hitBoxRadius: 2.4
   damageStats:
     damage: 20

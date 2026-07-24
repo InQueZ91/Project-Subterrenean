@@ -1,12 +1,11 @@
-﻿using Data.Stats;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Events;
 
 namespace Runtime
 {
     public class Unit : MonoBehaviour, IDamageable
     {
-        private UnitStats _stats;
+        private float _maxHealth;
         public float CurrentHealth { get; private set; }
         private bool _isDead;
         
@@ -17,24 +16,32 @@ namespace Runtime
         public UnityEvent<float> onHealed;
         public UnityEvent onDied;
     
-        public void Init(UnitStats stats)
+        public void Init(float maxHealth)
         {
-            _stats = stats;
-            CurrentHealth = _stats.maxHealth;
+            _maxHealth = maxHealth;
+            CurrentHealth = _maxHealth;
+        }
+        
+        public void UpdateStats(float newMaxHealth)
+        {
+            _maxHealth = newMaxHealth;
+            CurrentHealth = Mathf.Min(CurrentHealth, _maxHealth); // cap if new max is lower
+            onHealthChanged?.Invoke(CurrentHealth / _maxHealth);
         }
 
         public void Heal(float amount)
         {
-            CurrentHealth = Mathf.Min(_stats.maxHealth, CurrentHealth + amount);
-            onHealthChanged?.Invoke(CurrentHealth / _stats.maxHealth);
+            CurrentHealth = Mathf.Min(_maxHealth, CurrentHealth + amount);
+            onHealthChanged?.Invoke(CurrentHealth / _maxHealth);
             onHealed?.Invoke(amount);
             
             if (CurrentHealth > 0f && _isDead) _isDead = false; 
         }
+        
         public void TakeDamage(float amount, Vector3 knockback)
         {
             CurrentHealth = Mathf.Max(0f, CurrentHealth - amount);
-            onHealthChanged?.Invoke(CurrentHealth / _stats.maxHealth);
+            onHealthChanged?.Invoke(CurrentHealth / _maxHealth);
             onDamageTaken?.Invoke(amount, knockback);
         
             if (CurrentHealth <= 0f) Die();
@@ -46,7 +53,6 @@ namespace Runtime
             
             _isDead = true;
             onDied?.Invoke();
-            // Destroy(gameObject, 0.1f);
         }
     }
 }

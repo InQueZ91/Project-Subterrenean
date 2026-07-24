@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: RocketLauncher
   m_EditorClassIdentifier: Assembly-CSharp::Data.WeaponData
   stats:
-    fireRate: 1
+    fireRate: 4
     isAutomatic: 0
   supply: {fileID: 11400000, guid: f7443e56bfd7199448be2c58d303f094, type: 2}
   output: {fileID: 11400000, guid: cb37aca8bcf1995428c34eb5fe10829b, type: 2}

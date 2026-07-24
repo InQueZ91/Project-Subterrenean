@@ -1,6 +1,4 @@
-﻿using Data.Stats;
-using Runtime;
-using Runtime.Items;
+﻿using Runtime.Items;
 using Runtime.Spawners;
 using UnityEngine;
 
@@ -13,14 +11,14 @@ namespace Data.Items
         [SerializeField] private GameObject spawnPrefab;
         
         [Header("Configuration")]
-        [SerializeField] private UnitStats stats;
+        [SerializeField] private float health = 100f;
         
         public override void Use(GameObject user)
         {
             var spawnPos = user.transform.position + user.transform.forward * 2f;
             var forward = user.transform.forward;
             var barricade = GeneralSpawner.Instance.Spawn(spawnPrefab, spawnPos, Quaternion.LookRotation(forward));
-            barricade.GetComponent<BarricadeInstance>().Init(stats);
+            barricade.GetComponent<BarricadeInstance>().Init(health);
         }
     }
 }

@@ -23,5 +23,5 @@ MonoBehaviour:
     spreadCount: 0
     spreadAngle: 0
     useGravity: 0
-  hitEffects:
-  - {fileID: 11400000, guid: d3ee4eda1bc325e4c8d9e121cfecabec, type: 2}
+    hitEffects:
+    - {fileID: 11400000, guid: d3ee4eda1bc325e4c8d9e121cfecabec, type: 2}

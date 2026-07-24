@@ -14,7 +14,7 @@ namespace Data.Items
         
         [Header("Configuration")]
         [SerializeField] private LayerMask triggerMask;
-        [SerializeField] private DamageStats stats;
+        [SerializeField] private DamageStats damageStats;
         [SerializeField] private HitEffect[] hitEffects;
         [SerializeField] private float triggerRadius = 1f;
         [SerializeField] private float activateDelay = 1f;
@@ -22,13 +22,14 @@ namespace Data.Items
         
         public override void Use(GameObject user)
         {
+            // Spawn claymore
             var origin = user.transform.position + user.transform.forward;
             var forward = user.transform.forward;
             var claymore = GeneralSpawner.Instance.Spawn(spawnPrefab, origin, Quaternion.LookRotation(forward));
             claymore.GetComponent<ClaymoreInstance>().Init(
                 owner: user,
                 triggerMask: triggerMask,
-                damageStats: stats,
+                damageStats: damageStats,
                 hitEffects: hitEffects,
                 triggerRadius: triggerRadius,
                 activateDelay: activateDelay,

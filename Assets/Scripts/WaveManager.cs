@@ -7,7 +7,7 @@ using Runtime.Spawners;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class WaveSpawner : MonoBehaviour
+public class WaveManager : MonoBehaviour
 {
     [Header("Setup")]
     [SerializeField] private Vector3 playerSpawnPosition;
@@ -26,7 +26,7 @@ public class WaveSpawner : MonoBehaviour
     private int _enemiesSpawned;
 
     // Singleton
-    public static WaveSpawner Instance { get; private set; }
+    public static WaveManager Instance { get; private set; }
 
     private void Awake()
     {
@@ -69,6 +69,7 @@ public class WaveSpawner : MonoBehaviour
         
         // Countdown before wave
         yield return new WaitForSeconds(wave.timeBeforeWave);
+        Debug.Log($"Wave {_currentWaveIndex} started!");
         
         // Reset state
         _enemiesAlive = 0;
@@ -122,11 +123,14 @@ public class WaveSpawner : MonoBehaviour
 
     private void OnWaveCleared(WaveData wave)
     {
+        Debug.Log($"Wave {_currentWaveIndex} cleared!");
         // Spawn rewards at center of the map or spawn points
         LootSpawner.Instance.SpawnFromDropTable(wave.itemRewardPool, playerSpawnPosition);
         
         // Start weapon mod rewards
         // Another singleton but not implemented yet
+
+        StartNextWave();
     }
 
     private void SpawnEnemy(GameObject prefab)

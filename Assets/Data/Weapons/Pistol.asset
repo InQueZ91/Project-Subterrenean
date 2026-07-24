@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: Pistol
   m_EditorClassIdentifier: Assembly-CSharp::Data.WeaponData
   stats:
-    fireRate: 0.4
+    fireRate: 100
     isAutomatic: 0
-  supply: {fileID: 11400000, guid: 959ffa15ab660174f9920330383da74a, type: 2}
+  supply: {fileID: 11400000, guid: e5b78528b705ad64b823b7245462b29d, type: 2}
   output: {fileID: 11400000, guid: 6024dbf32d3e1174b822c25f9923283a, type: 2}
   visualPrefab: {fileID: 5642363291106522870, guid: c1b25863fef53234385d528366cc5e69, type: 3}
   fireSound: {fileID: 0}

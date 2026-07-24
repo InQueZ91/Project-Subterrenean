@@ -53,7 +53,11 @@ namespace UI
             {
                 var item = i < items.Count ? items[i] : null;
                 if (item == null) _slots[i].SetEmpty();
-                else _slots[i].SetItem(item.Data.icon, item.CurrentStacks, item.Data is UsableItemData);
+                else _slots[i].SetItem(
+                    item.Data.icon,
+                    item.CurrentStacks,
+                    item.Stats.maxStack,
+                    item.Data is UsableItemData);
             }
         }
         

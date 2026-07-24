@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5461ce9d8fe417abf38d546c7eef61f, type: 3}
   m_Name: Rpg
   m_EditorClassIdentifier: Assembly-CSharp::Data.Items.Ammo
-  isStackable: 1
-  maxStack: 1
+  itemStats:
+    maxStack: 4
+    isStackable: 1
   lootPrefab: {fileID: 4871147286282597990, guid: 5c29d2ae8fd57bb4e81f60194beb9364, type: 3}
   icon: {fileID: 21300000, guid: 01cc1cfb6c9f4c945bda28653ec25e6c, type: 3}
   ammoType: 2

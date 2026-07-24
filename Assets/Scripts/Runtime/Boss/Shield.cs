@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections;
-using Data.Stats;
+﻿using System.Collections;
 using UnityEngine;
 
 namespace Runtime.Boss
@@ -29,7 +27,7 @@ namespace Runtime.Boss
         [SerializeField] private string lowerTrigger = "Lower";
         
         [Header("Configuration")]
-        [SerializeField] private UnitStats unitStats;
+        [SerializeField] private float maxHealth = 100f;
         [SerializeField] private float regenerateDuration = 5f;
 
         private Unit _unit;
@@ -42,7 +40,7 @@ namespace Runtime.Boss
 
         private void Start()
         {
-            _unit.Init(unitStats);
+            _unit.Init(maxHealth);
             _unit.onDied.AddListener(OnShieldDestroyed);
         }
 
@@ -86,7 +84,7 @@ namespace Runtime.Boss
  
         private void RestoreShield()
         {
-            _unit.Heal(unitStats.maxHealth);
+            _unit.Heal(maxHealth);
             SetColliderEnabled(true);
             PlayAnimation(raiseTrigger);
         }

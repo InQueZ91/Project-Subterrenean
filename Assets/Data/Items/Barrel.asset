@@ -12,19 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad34e9b2ad104b73a679d743304f6228, type: 3}
   m_Name: Barrel
   m_EditorClassIdentifier: Assembly-CSharp::Data.Items.Barrel
-  isStackable: 1
-  maxStack: 4
+  itemStats:
+    maxStack: 10
+    isStackable: 1
   lootPrefab: {fileID: 4871147286282597990, guid: 5c29d2ae8fd57bb4e81f60194beb9364, type: 3}
   icon: {fileID: 21300000, guid: d883143470783964b98f131d7999cd95, type: 3}
   spawnPrefab: {fileID: 6563199809735589973, guid: 319d1664d74e23343adbe314ba35afb4, type: 3}
-  unitStats:
-    maxHealth: 1
-    moveSpeed: 0
-    rotationSpeed: 0
-    knockbackDecay: 0
-    knockbackResistance: 0
+  maxHealth: 0
   damageStats:
     damage: 50
-    knockback: 10
+    knockback: 6
   hitEffects:
   - {fileID: 11400000, guid: 40aecc82896acab48a3030fe4e3833ec, type: 2}

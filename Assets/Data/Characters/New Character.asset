@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Data.CharacterData
   unitStats:
     maxHealth: 100
-    moveSpeed: 5
+    moveSpeed: 4
     rotationSpeed: 720
     knockbackDecay: 8
     knockbackResistance: 1
@@ -25,11 +25,9 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 456ebb0d32d1c714ea0b94a4d621422f, type: 2}
   - {fileID: 11400000, guid: 5f58a7cb4be034040a4e21292b70930e, type: 2}
   startingItems:
-  - itemData: {fileID: 11400000, guid: 86e62e2bb6672974ab3f269e41bba7c3, type: 2}
-    quantity: 8
-  - itemData: {fileID: 11400000, guid: ddf805a02559edd41a5a75971f9838eb, type: 2}
-    quantity: 6
+  - itemData: {fileID: 11400000, guid: 0a5422d1f6c6e0c45b60ebf88ff1ec59, type: 2}
+    quantity: 60
   - itemData: {fileID: 11400000, guid: 9d43ca7e71b00844196b676bf0fbbabd, type: 2}
-    quantity: 12
+    quantity: 6
   - itemData: {fileID: 11400000, guid: 27c9da781c57ccc4d81df26c6c571530, type: 2}
-    quantity: 10
+    quantity: 2

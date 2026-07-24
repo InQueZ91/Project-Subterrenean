@@ -1,5 +1,4 @@
-﻿using Data.Stats;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.AI;
 
 namespace Runtime.Items
@@ -13,10 +12,10 @@ namespace Runtime.Items
         private Unit _unit;
         private NavMeshObstacle _navMeshObstacle;
 
-        public void Init(UnitStats unitStats)
+        public void Init(float health)
         {
             _unit = GetComponent<Unit>();
-            _unit.Init(unitStats);
+            _unit.Init(health);
             _unit.onDied.AddListener(OnDied);
             _navMeshObstacle = GetComponent<NavMeshObstacle>();
             _navMeshObstacle.carving = true;

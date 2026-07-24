@@ -1,4 +1,5 @@
 ﻿using System;
+using Data.HitEffects;
 
 namespace Data.Stats.Output
 {
@@ -14,6 +15,7 @@ namespace Data.Stats.Output
         public int spreadCount;
         public float spreadAngle;
         public bool useGravity;
+        public HitEffect[] hitEffects;
         
         public DamageStats ToDamageStats()
         {

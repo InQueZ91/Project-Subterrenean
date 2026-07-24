@@ -19,14 +19,14 @@ namespace Runtime.Items
         
         private NavMeshObstacle _navMeshObstacle;
 
-        public void Init(GameObject user, UnitStats unitStats, DamageStats damageStats, HitEffect[] hitEffects)
+        public void Init(GameObject user, float maxHealth, DamageStats damageStats, HitEffect[] hitEffects)
         {
             _user = user;
             _damageStats = damageStats;
             _hitEffects = hitEffects;
             
             _unit = GetComponent<Unit>();
-            _unit.Init(unitStats);
+            _unit.Init(maxHealth);
             _unit.onDied.AddListener(OnDied);
             
             _navMeshObstacle = GetComponent<NavMeshObstacle>();

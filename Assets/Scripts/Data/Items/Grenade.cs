@@ -17,7 +17,7 @@ namespace Data.Items
         [SerializeField] private float throwingAngle = 30f;
  
         [Header("Configuration")]
-        [SerializeField] private DamageStats stats;
+        [SerializeField] private DamageStats damageStats;
         [SerializeField] private HitEffect[] hitEffects;
         [SerializeField] private float fuseTime = 3f;
  
@@ -26,11 +26,12 @@ namespace Data.Items
             var origin = user.transform.position + user.transform.forward * 0.5f;
             var forward = user.transform.forward;
             var direction = Quaternion.AngleAxis(-throwingAngle, user.transform.right) * forward;
- 
+            
+            // Spawn grenade
             var go = GeneralSpawner.Instance.Spawn(spawnPrefab, origin, Quaternion.identity);
             go.GetComponent<GrenadeInstance>().Init(
                 owner: user,
-                damageStats: stats,
+                damageStats: damageStats,
                 hitEffects: hitEffects,
                 fuseTime: fuseTime,
                 throwVelocity: direction * throwForce

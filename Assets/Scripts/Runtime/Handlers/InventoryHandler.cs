@@ -14,12 +14,14 @@ namespace Runtime.Handlers
     {
         [SerializeField] private int inventoryCapacity = 6;
         [SerializeField] private int currentItemIndex;
+        
         private readonly List<Item> _inventory = new();
         
         public int CurrentItemIndex => currentItemIndex;
         public Item CurrentItem => _inventory.Count > 0 ? _inventory[currentItemIndex] : null;
 
         // Events
+        
         public UnityEvent<List<Item>, int> onInventoryChanged; // inventory, capacity
         public UnityEvent<int> onItemSelected; // index
         
@@ -105,7 +107,8 @@ namespace Runtime.Handlers
 
             foreach (var itemGroup in _inventory.GroupBy(i => i.Data))
             {
-                var maxStack = itemGroup.Key.maxStack;
+                var resolvedStats = itemGroup.Key.itemStats;
+                var maxStack = resolvedStats.maxStack;
                 if (maxStack <= 0) continue;
 
                 var remaining = itemGroup.Sum(i => i.CurrentStacks);
@@ -113,7 +116,7 @@ namespace Runtime.Handlers
                 while (remaining > 0)
                 {
                     var stackSize = Math.Min(remaining, maxStack);
-                    compacted.Add(new Item(itemGroup.Key, stackSize));
+                    compacted.Add(new Item(itemGroup.Key, resolvedStats, stackSize));
                     remaining -= stackSize;
                 }
             }
@@ -144,8 +147,10 @@ namespace Runtime.Handlers
             // Add new slots for remainder
             while (_inventory.Count < inventoryCapacity && quantity > 0)
             {
-                var stackSize = Math.Min(quantity, itemData.maxStack);
-                _inventory.Add(new Item(itemData, stackSize));
+                var resolvedStats = itemData.itemStats;
+                var maxStack = resolvedStats.maxStack;
+                var stackSize = Math.Min(quantity, maxStack);
+                _inventory.Add(new Item(itemData, resolvedStats, stackSize));
                 quantity -= stackSize;
             }
 

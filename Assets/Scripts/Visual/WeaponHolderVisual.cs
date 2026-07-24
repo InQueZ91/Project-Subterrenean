@@ -1,11 +1,14 @@
 using Runtime.Weapons;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Visual
 {
     public class WeaponHolderVisual : MonoBehaviour
     {
         private WeaponVisual _currentVisual;
+        
+        public UnityEvent<Transform> onFiringPointChanged = new();
 
         public void SwitchWeaponTo(IWeapon newWeapon)
         {
@@ -33,15 +36,16 @@ namespace Visual
             }
 
             _currentVisual.Init(weaponData);
+            onFiringPointChanged?.Invoke(_currentVisual.GetFirePoint);
         }
-
+        
         public void OnReloadStarted()
         {
             if (_currentVisual == null) return;
             _currentVisual.PlayReload();
         }
 
-        public void OnWeaponFired(FiringContext ctx)
+        public void OnWeaponFired()
         {
             if (_currentVisual == null)
             {
@@ -50,15 +54,6 @@ namespace Visual
             }
 
             _currentVisual.PlayFire();
-
-            var firePoint = _currentVisual.GetFirePoint;
-            if (firePoint == null)
-            {
-                Debug.LogWarning("WeaponHolderVisual: no fire point on WeaponVisual.", _currentVisual);
-                return;
-            }
-
-            ctx.Output.Fire(ctx.Mods, firePoint.position, ctx.Direction, ctx.Owner);
         }
     }
 }

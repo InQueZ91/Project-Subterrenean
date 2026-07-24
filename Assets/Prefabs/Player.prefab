@@ -180,6 +180,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 597baa0d3c7fb2e4999a35393c17103b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
+  onFiringPointChanged:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5858243310454873822}
+        m_TargetAssemblyTypeName: Runtime.Handlers.WeaponHandler, Assembly-CSharp
+        m_MethodName: SetFiringPoint
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &5573527184845905665
 GameObject:
   m_ObjectHideFlags: 0
@@ -258,7 +273,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: '::'
   data: {fileID: 11400000, guid: 5f370556f56fcaa4abe0e1099aec26a2, type: 2}
   cameraTransform: {fileID: 0}
-  modelTransform: {fileID: 9148676032291210078}
 --- !u!114 &8303728795143719073
 MonoBehaviour:
   m_ObjectHideFlags: 0

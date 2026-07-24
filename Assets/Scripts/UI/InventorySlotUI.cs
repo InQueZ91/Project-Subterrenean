@@ -23,11 +23,11 @@ namespace UI
             stacksText.text = "";
         }
 
-        public void SetItem(Sprite itemIcon, int stacks, bool isUsable)
+        public void SetItem(Sprite itemIcon, int stacks, int maxStack, bool isUsable)
         {
             icon.enabled = true;
             icon.sprite = itemIcon;
-            stacksText.text = stacks > 0 ? stacks.ToString() : "";
+            stacksText.text = stacks > 0 ? $"{stacks}/{maxStack}" : "";
             icon.color = isUsable ? Color.greenYellow : Color.gray;
         }
         

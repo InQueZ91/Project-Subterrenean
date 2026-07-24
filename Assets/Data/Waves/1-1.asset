@@ -12,7 +12,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b1ee7adb9334f0aa7f4cf9d70443dd4, type: 3}
   m_Name: 1-1
   m_EditorClassIdentifier: Assembly-CSharp::Data.WaveData
-  enemyCount: 20
-  spawnInterval: 2
-  timeBeforeWave: 3
-  enemyPrefab: {fileID: 4582106785990915923, guid: fc615014249fcc04da8f28cbc318d9f4, type: 3}
+  timeBeforeWave: 0
+  waveDurationSecs: 60
+  spawns:
+  - enemyPrefab: {fileID: 4582106785990915923, guid: fc615014249fcc04da8f28cbc318d9f4, type: 3}
+    count: 10
+    spawnInterval: 0.5
+    timing: 0.1
+  - enemyPrefab: {fileID: 4582106785990915923, guid: fc615014249fcc04da8f28cbc318d9f4, type: 3}
+    count: 15
+    spawnInterval: 1
+    timing: 0.371
+  - enemyPrefab: {fileID: 4582106785990915923, guid: 75248e3582085e9448893b196b178049, type: 3}
+    count: 3
+    spawnInterval: 1
+    timing: 0.753
+  - enemyPrefab: {fileID: 4582106785990915923, guid: fc615014249fcc04da8f28cbc318d9f4, type: 3}
+    count: 15
+    spawnInterval: 1
+    timing: 0.882
+  rewardChoiceCount: 3
+  itemRewardPool:
+  - itemData: {fileID: 11400000, guid: f720f900a20e5f04a9e8f139d46c6297, type: 2}
+    quantity: 2
+    chance: 1

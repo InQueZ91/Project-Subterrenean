@@ -13,10 +13,12 @@ MonoBehaviour:
   m_Name: Devil
   m_EditorClassIdentifier: Assembly-CSharp::Data.EnemyData
   unitStats:
-    maxHealth: 100
+    maxHealth: 200
     moveSpeed: 2
+    rotationSpeed: 120
     knockbackDecay: 8
     knockbackResistance: 2
+  visionAngle: 30
   combatMoves:
   - {fileID: 11400000, guid: ca8c617d5c16ef340bb405aeb25fe71e, type: 2}
   rewards:

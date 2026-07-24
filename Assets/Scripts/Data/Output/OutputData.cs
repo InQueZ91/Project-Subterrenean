@@ -1,5 +1,4 @@
-﻿using Runtime.Handlers;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Data.Output
 {
@@ -10,6 +9,6 @@ namespace Data.Output
     /// </summary>
     public abstract class OutputData : ScriptableObject
     {
-        public abstract void Fire(WeaponModHandler mods, Vector3 origin, Vector3 direction, GameObject owner);
+        public abstract void Fire(Vector3 origin, Vector3 direction, GameObject owner);
     }
 }

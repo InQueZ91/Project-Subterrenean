@@ -16,12 +16,14 @@ namespace Runtime.Handlers
         // Runtime
         [SerializeField] private int currentWeaponIndex;
         private readonly List<IWeapon> _weapons = new();
-
+        
+        private Transform _firingPoint;
+        
         public int CurrentWeaponIndex => currentWeaponIndex;
         public IWeapon CurrentWeapon => _weapons.Count > 0 ? _weapons[currentWeaponIndex] : null;
 
         [Header("Events")]
-        public UnityEvent<FiringContext> onWeaponFired;
+        public UnityEvent onWeaponFired;
         public UnityEvent<IWeapon> onWeaponEquipped;
         public UnityEvent<IWeapon> onAmmoChanged;
         
@@ -63,15 +65,17 @@ namespace Runtime.Handlers
             
             weapon.Fire();
             
-            var context = new FiringContext(weapon.Data.output, weapon.Mods, direction, gameObject);
+            weapon.Data.output.Fire(_firingPoint.position, direction, gameObject);
             
-            onWeaponFired?.Invoke(context);
+            onWeaponFired?.Invoke();
             onAmmoChanged?.Invoke(weapon);
             
             // Auto-reload conventional weapons when empty
             if (weapon.Supply is IReloadableSupply { CurrentAmmo: <= 0})
                 Reload();
         }
+
+        public void SetFiringPoint(Transform point) => _firingPoint = point;
 
         // Reload
         public void Reload()
@@ -106,13 +110,13 @@ namespace Runtime.Handlers
                 yield break;
             }
 
-            var stats = weapon.Mods.Resolve(supply.Stats);
-            var ammoToLoad = Mathf.Min(availableReserve, stats.ammoCapacity - supply.CurrentAmmo);
-            var reloadTimePerAmmo = stats.reloadTime / ammoToLoad;
+            var resolvedStats = supply.Stats;
+            var ammoToLoad = Mathf.Min(availableReserve, resolvedStats.ammoCapacity - supply.CurrentAmmo);
+            var reloadTimePerAmmo = resolvedStats.reloadTime / ammoToLoad;
             
             onReloadStarted?.Invoke(reloadTimePerAmmo, ammoToLoad, supply.CurrentAmmo);
 
-            yield return new WaitForSeconds(stats.reloadTime);
+            yield return new WaitForSeconds(resolvedStats.reloadTime);
             
             onReloadCompleted?.Invoke();
 

@@ -10,9 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0b1ee7adb9334f0aa7f4cf9d70443dd4, type: 3}
-  m_Name: 1-4
+  m_Name: Test
   m_EditorClassIdentifier: Assembly-CSharp::Data.WaveData
-  enemyCount: 1
-  spawnInterval: 2
   timeBeforeWave: 3
-  enemyPrefab: {fileID: 4582106785990915923, guid: d650b262aa09e7f4aaeb126cd403bffb, type: 3}
+  waveDurationSecs: 60
+  spawns:
+  - enemyPrefab: {fileID: 4582106785990915923, guid: d650b262aa09e7f4aaeb126cd403bffb, type: 3}
+    count: 2
+    spawnInterval: 2
+    timing: 0.1
+  rewardChoiceCount: 3
+  modRewardPool: []
+  itemRewardPool:
+  - itemData: {fileID: 11400000, guid: f720f900a20e5f04a9e8f139d46c6297, type: 2}
+    quantity: 2
+    chance: 1

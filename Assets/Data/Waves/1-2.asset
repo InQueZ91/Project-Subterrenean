@@ -12,7 +12,36 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b1ee7adb9334f0aa7f4cf9d70443dd4, type: 3}
   m_Name: 1-2
   m_EditorClassIdentifier: Assembly-CSharp::Data.WaveData
-  enemyCount: 4
-  spawnInterval: 2
   timeBeforeWave: 3
-  enemyPrefab: {fileID: 4582106785990915923, guid: 75248e3582085e9448893b196b178049, type: 3}
+  waveDurationSecs: 60
+  spawns:
+  - enemyPrefab: {fileID: 4582106785990915923, guid: fc615014249fcc04da8f28cbc318d9f4, type: 3}
+    count: 10
+    spawnInterval: 1
+    timing: 0.107
+  - enemyPrefab: {fileID: 4582106785990915923, guid: 75248e3582085e9448893b196b178049, type: 3}
+    count: 3
+    spawnInterval: 1
+    timing: 0.258
+  - enemyPrefab: {fileID: 4582106785990915923, guid: fc615014249fcc04da8f28cbc318d9f4, type: 3}
+    count: 15
+    spawnInterval: 1
+    timing: 0.41
+  - enemyPrefab: {fileID: 4582106785990915923, guid: d650b262aa09e7f4aaeb126cd403bffb, type: 3}
+    count: 2
+    spawnInterval: 1
+    timing: 0.634
+  - enemyPrefab: {fileID: 4582106785990915923, guid: 75248e3582085e9448893b196b178049, type: 3}
+    count: 5
+    spawnInterval: 1
+    timing: 0.783
+  - enemyPrefab: {fileID: 4582106785990915923, guid: fc615014249fcc04da8f28cbc318d9f4, type: 3}
+    count: 10
+    spawnInterval: 1
+    timing: 0.882
+  rewardChoiceCount: 3
+  modRewardPool: []
+  itemRewardPool:
+  - itemData: {fileID: 11400000, guid: f720f900a20e5f04a9e8f139d46c6297, type: 2}
+    quantity: 4
+    chance: 1

@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Data.Supplies.ReloadableSupplyData
   ammoType: 0
   stats:
-    ammoCapacity: 48
-    reloadTime: 2
+    ammoCapacity: 32
+    reloadTime: 3

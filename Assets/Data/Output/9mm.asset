@@ -15,13 +15,14 @@ MonoBehaviour:
   prefab: {fileID: 4079493092272257954, guid: 477c4688b29c92642be4b8cbe731977c, type: 3}
   stats:
     speed: 80
-    damage: 10
-    knockback: 3
+    damage: 6
+    knockback: 2
     range: 35
     pierce: 0
     ricochet: 0
     spreadCount: 0
     spreadAngle: 0
     useGravity: 0
-  hitEffects:
-  - {fileID: 11400000, guid: d3ee4eda1bc325e4c8d9e121cfecabec, type: 2}
+    hitEffects:
+    - {fileID: 11400000, guid: d3ee4eda1bc325e4c8d9e121cfecabec, type: 2}
+    - {fileID: 11400000, guid: 36ad2cfea32417244a5caad0982b17c7, type: 2}

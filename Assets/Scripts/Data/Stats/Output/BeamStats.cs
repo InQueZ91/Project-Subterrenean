@@ -1,4 +1,5 @@
 ﻿using System;
+using Data.HitEffects;
 
 namespace Data.Stats.Output
 {
@@ -9,6 +10,7 @@ namespace Data.Stats.Output
         public float knockback;
         public float range;
         public int maxBounces;
+        public HitEffect[] hitEffects;
 
         public DamageStats ToDamageStats()
         {

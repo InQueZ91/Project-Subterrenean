@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Smg
   m_EditorClassIdentifier: Assembly-CSharp::Data.WeaponData
   stats:
-    fireRate: 0.1
+    fireRate: 600
     isAutomatic: 1
   supply: {fileID: 11400000, guid: 9358b511e47465840a7f77d750000732, type: 2}
   output: {fileID: 11400000, guid: 6024dbf32d3e1174b822c25f9923283a, type: 2}

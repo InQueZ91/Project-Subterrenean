@@ -1,4 +1,5 @@
 using Data;
+using Data.Stats;
 using Runtime;
 using Runtime.Handlers;
 using UnityEngine;
@@ -26,7 +27,7 @@ namespace Controllers
         private Unit _unit;
         private WeaponHandler _weaponHandler;
         private InventoryHandler _inventoryHandler;
-
+        
         private Vector3 _knockbackVelocity;
 
         private readonly Plane _groundPlane = new Plane(Vector3.up, Vector3.zero);
@@ -48,7 +49,7 @@ namespace Controllers
 
         private void Start()
         {
-            _unit.Init(data.unitStats);
+            _unit.Init(data.unitStats.maxHealth);
             _unit.onDamageTaken.AddListener(OnDamageTaken);
             _unit.onDied.AddListener(OnDied);
             
@@ -81,7 +82,7 @@ namespace Controllers
             HandleUseItem();
             HandleDropItem();
         }
-
+        
         private void OnDamageTaken(float amount, Vector3 knockback)
         {
             // Flatten knockback to XZ — Y component causes floating with CharacterController

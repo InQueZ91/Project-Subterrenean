@@ -12,10 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1aca3bec337846f1846f77beebf66c35, type: 3}
   m_Name: FireBall
   m_EditorClassIdentifier: Assembly-CSharp::Data.CombatMove.RangeMoveData
-  activeRange: 12
-  cooldown: 3
+  activeRange: 15
+  cooldown: 1
   hitWindowStart: 0.5
-  hitWindowEnd: 0.6
+  hitWindowEnd: 0.8
   isInterruptable: 1
   interruptThreshold: 2
   projectileOutput: {fileID: 11400000, guid: 203d9e30fd05d4b409ab3244aa11897d, type: 2}
+  facingThreshold: 0.5

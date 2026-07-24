@@ -1,5 +1,4 @@
-﻿using Data.HitEffects;
-using Data.Stats.Output;
+﻿using Data.Stats.Output;
 using Runtime.Handlers;
 using Runtime.Spawners;
 using UnityEngine;
@@ -14,23 +13,21 @@ namespace Data.Output
     {
         public GameObject prefab;
         public ProjectileStats stats;
-        public HitEffect[] hitEffects;
         
-        public override void Fire(WeaponModHandler mods, Vector3 origin, Vector3 direction, GameObject owner)
+        public override void Fire(Vector3 origin, Vector3 direction, GameObject owner)
         {
             if (prefab == null)
             {
                 Debug.LogWarning($"ProjectileData '{name}': missing prefab.", this);
                 return;
             }
-
-            var modifiedStats = mods.Resolve(stats);
-            var count = Mathf.Max(1, modifiedStats.spreadCount);
+            
+            var count = Mathf.Max(1, stats.spreadCount);
 
             for (var i = 0; i < count; i++)
             {
-                var spreadDirection = GetSpreadDirection(direction, modifiedStats.spreadAngle);
-                ProjectileSpawner.Instance.Spawn(this, modifiedStats, origin, spreadDirection, owner);
+                var spreadDirection = GetSpreadDirection(direction, stats.spreadAngle);
+                ProjectileSpawner.Instance.Spawn(this, stats, origin, spreadDirection, owner);
             }
         }
 

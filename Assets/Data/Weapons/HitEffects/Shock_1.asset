@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d305c74e54a84e41998d4a2296b36f49, type: 3}
+  m_Name: Shock_1
+  m_EditorClassIdentifier: Assembly-CSharp::Data.HitEffects.Shock
+  hitVFX: {fileID: 0}
+  isFriendlyFire: 0
+  baseDamage: 2
+  baseMagnitude: 3
+  numberOfChains: 3
+  falloff: 0.5
+  radius: 4
+  hitLayers:
+    serializedVersion: 2
+    m_Bits: 320

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: OpticBlast
   m_EditorClassIdentifier: Assembly-CSharp::Data.WeaponData
   stats:
-    fireRate: 0.1
+    fireRate: 600
     isAutomatic: 1
   supply: {fileID: 11400000, guid: c082c457cec806040818b0c70b38b19e, type: 2}
   output: {fileID: 11400000, guid: e1d80901cbfd13c478f54a65a1f0a9af, type: 2}

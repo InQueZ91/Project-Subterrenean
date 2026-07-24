@@ -11,7 +11,6 @@ namespace Runtime
         private GameObject _prefab;
         private GameObject _owner;
         private Rigidbody _rb;
-        private HitEffect[] _hitEffects;
         private ProjectileStats _stats;
         private LayerMask _hitMask;
         
@@ -30,14 +29,12 @@ namespace Runtime
         public void Init(
             GameObject prefab,
             ProjectileStats modifiedStats,
-            HitEffect[] hitEffects,
             Vector3 direction,
             GameObject owner,
             LayerMask hitMask)
         {
             _prefab = prefab;
             _stats = modifiedStats;
-            _hitEffects = hitEffects;
             _direction = direction.normalized;
             _owner = owner;
             _hitMask = hitMask;
@@ -116,7 +113,7 @@ namespace Runtime
                 owner = _owner,
                 stats = _stats.ToDamageStats(),
             };
-            foreach (var hitEffect in _hitEffects) hitEffect.Apply(hitContext);
+            foreach (var hitEffect in _stats.hitEffects) hitEffect.Apply(hitContext);
         }
 
         private bool TryRicochet(Vector3 hitPoint, Vector3? surfaceNormal)

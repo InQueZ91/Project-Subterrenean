@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Shotgun
   m_EditorClassIdentifier: Assembly-CSharp::Data.WeaponData
   stats:
-    fireRate: 0.7
+    fireRate: 70
     isAutomatic: 0
   supply: {fileID: 11400000, guid: 21c3c04ba21098445afb6c044fa8e219, type: 2}
   output: {fileID: 11400000, guid: 6a242011c23322241be078033a4bf3ba, type: 2}
