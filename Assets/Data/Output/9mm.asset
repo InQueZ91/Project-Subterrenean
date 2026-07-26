@@ -25,4 +25,3 @@ MonoBehaviour:
     useGravity: 0
     hitEffects:
     - {fileID: 11400000, guid: d3ee4eda1bc325e4c8d9e121cfecabec, type: 2}
-    - {fileID: 11400000, guid: 36ad2cfea32417244a5caad0982b17c7, type: 2}

@@ -1733,6 +1733,17 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 3, z: 54}
   m_Center: {x: 0, y: 1.5, z: 0}
+--- !u!114 &1232218074 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8216505173152389838, guid: d52b0af7963ccab4ebe102c1b70a017b, type: 3}
+  m_PrefabInstance: {fileID: 1493315482}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be673ad072e6f6f4f9117348a8f6a3ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ReloadBar
 --- !u!1 &1309424120
 GameObject:
   m_ObjectHideFlags: 0
@@ -2157,6 +2168,30 @@ PrefabInstance:
     - target: {fileID: 5573527184845905665, guid: d52b0af7963ccab4ebe102c1b70a017b, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5858243310454873822, guid: d52b0af7963ccab4ebe102c1b70a017b, type: 3}
+      propertyPath: onWeaponUpdated.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5858243310454873822, guid: d52b0af7963ccab4ebe102c1b70a017b, type: 3}
+      propertyPath: onWeaponUpdated.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1232218074}
+    - target: {fileID: 5858243310454873822, guid: d52b0af7963ccab4ebe102c1b70a017b, type: 3}
+      propertyPath: onWeaponUpdated.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5858243310454873822, guid: d52b0af7963ccab4ebe102c1b70a017b, type: 3}
+      propertyPath: onWeaponUpdated.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: RefreshPips
+      objectReference: {fileID: 0}
+    - target: {fileID: 5858243310454873822, guid: d52b0af7963ccab4ebe102c1b70a017b, type: 3}
+      propertyPath: onWeaponUpdated.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: UI.SupplyBar, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 5858243310454873822, guid: d52b0af7963ccab4ebe102c1b70a017b, type: 3}
+      propertyPath: onWeaponUpdated.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 6031920894601449249, guid: d52b0af7963ccab4ebe102c1b70a017b, type: 3}
       propertyPath: m_AnchorMax.y

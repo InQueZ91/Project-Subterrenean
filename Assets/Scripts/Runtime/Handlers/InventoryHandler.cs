@@ -14,28 +14,28 @@ namespace Runtime.Handlers
     {
         [SerializeField] private int inventoryCapacity = 6;
         [SerializeField] private int currentItemIndex;
-        
+
         private readonly List<Item> _inventory = new();
-        
+
         public int CurrentItemIndex => currentItemIndex;
         public Item CurrentItem => _inventory.Count > 0 ? _inventory[currentItemIndex] : null;
 
         // Events
-        
+
         public UnityEvent<List<Item>, int> onInventoryChanged; // inventory, capacity
         public UnityEvent<int> onItemSelected; // index
-        
+
         private void NotifyInventoryChanged()
         {
             onInventoryChanged?.Invoke(_inventory, inventoryCapacity);
         }
-        
+
         public void Init(StartingItemData[] startingItems)
         {
             _inventory.Clear();
             foreach (var item in startingItems)
                 TryAddItem(item.itemData, item.quantity);
-            
+
             if (_inventory.Count > 0) SwitchItem(0);
         }
 
@@ -43,7 +43,7 @@ namespace Runtime.Handlers
         {
             var item = CurrentItem;
             if (item == null) return;
-            
+
             SpawnDrop(item);
             CompactInventory();
             NotifyInventoryChanged();
@@ -54,49 +54,43 @@ namespace Runtime.Handlers
             item.Consume();
             LootSpawner.Instance.Spawn(item.Data, 1, transform.position);
         }
-        
+
         public void UseItem(GameObject user)
         {
             var itemToUse = CurrentItem;
             if (itemToUse == null) return;
             if (!itemToUse.Use(user)) return;
             if (itemToUse.CurrentStacks <= 0) SwitchItem(currentItemIndex);
-            
+
             CompactInventory();
             NotifyInventoryChanged();
         }
-        
+
         public void SwitchItem(int index)
         {
             if (_inventory.Count == 0) return;
             currentItemIndex = ((index % _inventory.Count) + _inventory.Count) % _inventory.Count;
             onItemSelected?.Invoke(currentItemIndex);
         }
-
-        public int GetAmmoCount(AmmoType ammoType)
+        
+        public Item GetItemByMagazineType(MagazineType type)
         {
-            return GetAmmo(ammoType)?.CurrentStacks ?? 0;
+            return _inventory.Find(i => i.Data is MagazineItem a && a.type == type);
         }
-
-        public int ConsumeAmmo(AmmoType ammoType, int quantity)
+        
+        public void ConsumeMagazineItem(MagazineType type)
         {
-            var ammoItem = GetAmmo(ammoType);
-            if (ammoItem == null) return 0;
-
-            var consumed = 0;
-            while (consumed < quantity && ammoItem.CurrentStacks > 0)
-            {
-                ammoItem.Consume();
-                consumed++;
-            }
+            var magazineItem = GetItemByMagazineType(type);
+            if (magazineItem == null) return;
+            
+            magazineItem.Consume();
 
             // Clean up the slot if empty
-            if (ammoItem.CurrentStacks <= 0)
-                _inventory.Remove(ammoItem);
+            if (magazineItem.CurrentStacks <= 0)
+                _inventory.Remove(magazineItem);
 
             CompactInventory();
             NotifyInventoryChanged();
-            return consumed;
         }
 
         private void CompactInventory()
@@ -123,14 +117,9 @@ namespace Runtime.Handlers
 
             _inventory.Clear();
             _inventory.AddRange(compacted);
-            
+
             // If current item index is not valid, reset selection
             if (currentItemIndex >= _inventory.Count) SwitchItem(currentItemIndex);
-        }
-
-        private Item GetAmmo(AmmoType ammoType)
-        {
-            return _inventory.Find(i => i.Data is Ammo a && a.ammoType == ammoType);
         }
 
         public int TryAddItem(ItemData itemData, int quantity)

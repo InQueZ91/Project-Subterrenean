@@ -1,5 +1,4 @@
 using Runtime.Weapons;
-using Runtime.Weapons.Supplies;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -23,14 +22,15 @@ namespace UI
 
         public void SwitchWeapon(Weapon newWeapon)
         {
-            if (newWeapon.Supply is IReloadableSupply reloadableSupply)
-            {
-                SetAmmo(reloadableSupply.CurrentAmmo);
-            }
-            else
-            {
-                ammoText.text = "";
-            }
+            SetAmmo(newWeapon.Magazine.CurrentRounds);
+            // if (newWeapon.Supply is IReloadableSupply reloadableSupply)
+            // {
+            //     SetAmmo(reloadableSupply.CurrentAmmo);
+            // }
+            // else
+            // {
+            //     ammoText.text = "";
+            // }
         }
     }
 }

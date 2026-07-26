@@ -10,11 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d5461ce9d8fe417abf38d546c7eef61f, type: 3}
-  m_Name: Rpg
-  m_EditorClassIdentifier: Assembly-CSharp::Data.Items.Ammo
+  m_Name: LongMagazine
+  m_EditorClassIdentifier: Assembly-CSharp::Data.Items.MagazineItem
   itemStats:
-    maxStack: 4
+    maxStack: 5
     isStackable: 1
   lootPrefab: {fileID: 4871147286282597990, guid: 5c29d2ae8fd57bb4e81f60194beb9364, type: 3}
-  icon: {fileID: 21300000, guid: 01cc1cfb6c9f4c945bda28653ec25e6c, type: 3}
-  ammoType: 2
+  icon: {fileID: 21300000, guid: 53e28fd33bd9d7b4a817fc095b630bf4, type: 3}
+  type: {fileID: 11400000, guid: ed99e18eaf47b8c439c3eac1d820e673, type: 2}
+  capacity: 32
+  reloadDuration: 3
+  outputData: {fileID: 11400000, guid: 6024dbf32d3e1174b822c25f9923283a, type: 2}

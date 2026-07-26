@@ -9,10 +9,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 391fc679080d425e8dbec0a5353d5de5, type: 3}
-  m_Name: Rocket_Single
-  m_EditorClassIdentifier: Assembly-CSharp::Data.Supplies.ReloadableSupplyData
-  ammoType: 2
-  stats:
-    ammoCapacity: 1
-    reloadTime: 10
+  m_Script: {fileID: 11500000, guid: 9ef9619d09dd4cf88b79c3580635c897, type: 3}
+  m_Name: 9mm
+  m_EditorClassIdentifier: Assembly-CSharp::Data.MagazineType

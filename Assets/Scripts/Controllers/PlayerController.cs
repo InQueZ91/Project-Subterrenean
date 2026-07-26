@@ -57,8 +57,8 @@ namespace Controllers
             _inventoryHandler.Init(data.startingItems);
             
             // Wire
-            _weaponHandler.onAmmoRequested = _inventoryHandler.GetAmmoCount;
-            _weaponHandler.onAmmoConsumed = _inventoryHandler.ConsumeAmmo;
+            _weaponHandler.onMagazineRequested = _inventoryHandler.GetItemByMagazineType;
+            _weaponHandler.onMagazineConsumed = _inventoryHandler.ConsumeMagazineItem;
         }
 
         private void OnEnable()

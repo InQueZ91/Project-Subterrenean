@@ -15,8 +15,8 @@ MonoBehaviour:
   stats:
     fireRate: 600
     isAutomatic: 1
-  supply: {fileID: 11400000, guid: 9358b511e47465840a7f77d750000732, type: 2}
-  output: {fileID: 11400000, guid: 6024dbf32d3e1174b822c25f9923283a, type: 2}
+  supportedMagazine: {fileID: 11400000, guid: ed99e18eaf47b8c439c3eac1d820e673, type: 2}
+  startingMagazine: {fileID: 11400000, guid: 24de299ce2fad294d933e9044aee7c6a, type: 2}
   visualPrefab: {fileID: 4795470153620031137, guid: 9151ac0ebfb30f740a2447e16ab6d5f6, type: 3}
   fireSound: {fileID: 0}
   reloadSound: {fileID: 0}

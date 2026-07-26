@@ -1,6 +1,5 @@
-﻿using Data.Output;
+﻿using Data.Items;
 using Data.Stats;
-using Data.Supplies;
 using UnityEngine;
 
 namespace Data
@@ -9,12 +8,8 @@ namespace Data
     public class WeaponData : ScriptableObject
     {
         public WeaponStats stats;
-        
-        [Header("Supply")]
-        public SupplyData supply;
-
-        [Header("Output")] 
-        public OutputData output;
+        public MagazineType supportedMagazine;
+        public MagazineItem startingMagazine;
         
         [Header("Visuals")]
         public GameObject visualPrefab;

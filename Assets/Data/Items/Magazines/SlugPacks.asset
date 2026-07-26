@@ -10,11 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d5461ce9d8fe417abf38d546c7eef61f, type: 3}
-  m_Name: 12GA
+  m_Name: SlugPacks
   m_EditorClassIdentifier: Assembly-CSharp::Data.Items.Ammo
   itemStats:
-    maxStack: 30
+    maxStack: 5
     isStackable: 1
   lootPrefab: {fileID: 4871147286282597990, guid: 5c29d2ae8fd57bb4e81f60194beb9364, type: 3}
-  icon: {fileID: 21300000, guid: 90ef681e04fdf1240ab08058ea9b16f7, type: 3}
-  ammoType: 1
+  icon: {fileID: 21300000, guid: cacd1dd8c920d9346afd1c922e854daa, type: 3}
+  type: {fileID: 11400000, guid: f061c7cdf6514734e9ab41278903f511, type: 2}
+  capacity: 6
+  reloadDuration: 3
+  outputData: {fileID: 11400000, guid: 6a242011c23322241be078033a4bf3ba, type: 2}

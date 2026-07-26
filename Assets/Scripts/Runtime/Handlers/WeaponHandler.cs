@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Data;
 using Data.Items;
+using Runtime.Items;
 using Runtime.Weapons;
 using Runtime.Weapons.Supplies;
 using UnityEngine;
@@ -25,14 +26,14 @@ namespace Runtime.Handlers
         [Header("Events")]
         public UnityEvent onWeaponFired;
         public UnityEvent<IWeapon> onWeaponEquipped;
-        public UnityEvent<IWeapon> onAmmoChanged;
+        public UnityEvent<IWeapon> onWeaponUpdated;
         
-        public UnityEvent<float, int, int> onReloadStarted; // reloadTimePerAmmo, ammoToLoad, currentAmmo
+        public UnityEvent<float, int> onReloadStarted; // reloadDuration, capacity
         public UnityEvent onReloadCompleted;
         public UnityEvent onReloadFailed;
-
-        public Func<AmmoType, int> onAmmoRequested; // AmmoType → available reserve count
-        public Func<AmmoType, int, int> onAmmoConsumed; // AmmoType, needed → actually consumed
+    
+        public Func<MagazineType, Item> onMagazineRequested; // Input(type) -> Output(Item)
+        public Action<MagazineType> onMagazineConsumed; // Input(type) -> void
         
         // Initialization
         public void Init(WeaponData[] startingWeapons)
@@ -50,31 +51,27 @@ namespace Runtime.Handlers
         {
             // Recharge battery weapons every frame for passive recharge
 
-            if (CurrentWeapon.Supply is IRechargeableSupply supply)
-            {
-                supply.Recharge(Time.deltaTime);
-                onAmmoChanged?.Invoke(CurrentWeapon); // UI pulls charge from IRechargeableSupply
-            }
+            // if (CurrentWeapon.Supply is IRechargeableSupply supply)
+            // {
+            //     supply.Recharge(Time.deltaTime);
+            //     onWeaponUpdated?.Invoke(CurrentWeapon); // UI pulls charge from IRechargeableSupply
+            // }
         }
         
         // Fire
         public void Fire(Vector3 direction)
         {
             var weapon = CurrentWeapon;
-            if (weapon == null || !weapon.CanFire()) return;
-            
-            weapon.Fire();
-            
-            weapon.Data.output.Fire(_firingPoint.position, direction, gameObject);
+            if (weapon == null) return;
+            if (!weapon.TryFire(_firingPoint.position, direction, gameObject)) return;
             
             onWeaponFired?.Invoke();
-            onAmmoChanged?.Invoke(weapon);
+            onWeaponUpdated?.Invoke(weapon);
             
             // Auto-reload conventional weapons when empty
-            if (weapon.Supply is IReloadableSupply { CurrentAmmo: <= 0})
+            if (weapon.Magazine is null)
                 Reload();
         }
-
         public void SetFiringPoint(Transform point) => _firingPoint = point;
 
         // Reload
@@ -83,47 +80,44 @@ namespace Runtime.Handlers
             var weapon = CurrentWeapon;
             
             // Battery weapons don't reload
-            if (weapon.Supply is not IReloadableSupply reloadableSupply)
+            // if (weapon.Supply is not IReloadableSupply reloadableSupply)
+            // {
+            //     onReloadFailed?.Invoke();
+            //     return;
+            // }
+
+            if (!weapon.TryReload())
             {
                 onReloadFailed?.Invoke();
                 return;
             }
-
-            if (!reloadableSupply.TryReload())
+ 
+            var item = onMagazineRequested?.Invoke(weapon.Data.supportedMagazine);
+            if (item == null)
             {
+                weapon.CancelReload();
                 onReloadFailed?.Invoke();
                 return;
             }
-
-            StartCoroutine(ReloadCoroutine(weapon, reloadableSupply));
+            
+            weapon.Unload();
+            
+            StartCoroutine(ReloadCoroutine(weapon, item.Data as MagazineItem));
         }
         
-        private IEnumerator ReloadCoroutine(IWeapon weapon, IReloadableSupply supply)
+        private IEnumerator ReloadCoroutine(IWeapon weapon, MagazineItem magazineToLoad)
         {
-            var ammoType = supply.Type;
-            var availableReserve = onAmmoRequested?.Invoke(ammoType) ?? 0;
-
-            if (availableReserve <= 0)
-            {
-                supply.CancelReload();
-                onReloadFailed?.Invoke();
-                yield break;
-            }
-
-            var resolvedStats = supply.Stats;
-            var ammoToLoad = Mathf.Min(availableReserve, resolvedStats.ammoCapacity - supply.CurrentAmmo);
-            var reloadTimePerAmmo = resolvedStats.reloadTime / ammoToLoad;
-            
-            onReloadStarted?.Invoke(reloadTimePerAmmo, ammoToLoad, supply.CurrentAmmo);
-
-            yield return new WaitForSeconds(resolvedStats.reloadTime);
+            var reloadDuration = magazineToLoad.reloadDuration;
+            onReloadStarted?.Invoke(reloadDuration, magazineToLoad.capacity);
+            yield return new WaitForSeconds(reloadDuration);
             
             onReloadCompleted?.Invoke();
 
-            supply.FinishReload(availableReserve, out var consumed);
+            weapon.FinishReload(magazineToLoad);
             
-            onAmmoConsumed?.Invoke(ammoType, consumed);
-            onAmmoChanged?.Invoke(weapon);
+            // consume magazine item
+            onMagazineConsumed?.Invoke(magazineToLoad.type);
+            onWeaponUpdated?.Invoke(weapon);
         }
 
         // Switch
@@ -140,7 +134,7 @@ namespace Runtime.Handlers
 
             var weapon = _weapons[index];
             onWeaponEquipped?.Invoke(weapon);
-            onAmmoChanged?.Invoke(weapon);
+            onWeaponUpdated?.Invoke(weapon);
         }
     }
 }

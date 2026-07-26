@@ -17,7 +17,6 @@ namespace UI
         private float _reloadTimePerAmmo; // seconds between each ammo unit
         private float _reloadElapsed;     // time accumulated since reload started
         private bool _isReloading;
-        private float _reloadStartAmmo;   // ammo value when this reload began
         private float _reloadTargetAmmo;  // ammo value when this reload finishes
 
         // ── display state ────────────────────────────────────────────────────────
@@ -31,7 +30,7 @@ namespace UI
         {
             _currentWeapon = weapon;
             _isReloading = false;
-            _isRechargeableMode = weapon.Supply is IRechargeableSupply;
+            // _isRechargeableMode = weapon.Supply is IRechargeableSupply;
 
             foreach (Transform child in pipContainer)
                 Destroy(child.gameObject);
@@ -40,9 +39,10 @@ namespace UI
             // Battery: always a single pip representing charge %.
             // Reloadable: one pip per ammoPerPip units of MaxAmmo.
             // Unlimited (melee): also a single pip, RefreshPips just won't touch it.
-            var pipCount = weapon.Supply is IReloadableSupply reloadable
-                ? Mathf.CeilToInt((float)reloadable.MaxAmmo / supplyPerPip)
-                : 1;
+            // var pipCount = weapon.Supply is IReloadableSupply reloadable
+            //     ? Mathf.CeilToInt((float)reloadable.MaxAmmo / supplyPerPip)
+            //     : 1;
+            var pipCount = Mathf.CeilToInt((float)weapon.Magazine.Data.capacity / supplyPerPip);
 
             for (var i = 0; i < pipCount; i++)
             {
@@ -61,16 +61,17 @@ namespace UI
         {
             if (_currentWeapon?.Data != weapon.Data) return;
 
-            if (weapon.Supply is IRechargeableSupply rechargeable)
-            {
-                UpdateBatteryFill(rechargeable);
-                return;
-            }
+            // if (weapon.Supply is IRechargeableSupply rechargeable)
+            // {
+            //     UpdateBatteryFill(rechargeable);
+            //     return;
+            // }
 
             _isReloading = false;
 
-            if (weapon.Supply is IReloadableSupply reloadable)
-                UpdatePipsFill(reloadable.CurrentAmmo);
+            // if (weapon.Supply is IReloadableSupply reloadable)
+            //     UpdatePipsFill(reloadable.CurrentAmmo);
+            UpdatePipsFill(weapon.Magazine.CurrentRounds);
         }
 
         private void UpdateBatteryFill(IRechargeableSupply rechargeable)
@@ -93,15 +94,14 @@ namespace UI
 
         // ── Reload lifecycle (conventional weapons only — batteries never reload) ──
 
-        public void StartReload(float reloadTimePerAmmo, int ammoToLoad, int currentAmmo)
+        public void StartReload(float reloadDuration, int capacity)
         {
             if (_isRechargeableMode) return;
 
-            _reloadTimePerAmmo = reloadTimePerAmmo;
+            _reloadTimePerAmmo = reloadDuration / capacity;
             _isReloading = true;
             _reloadElapsed = 0f;
-            _reloadStartAmmo = currentAmmo;
-            _reloadTargetAmmo = currentAmmo + ammoToLoad;
+            _reloadTargetAmmo = capacity;
 
             reloadAnimator.Play("Reload");
         }
@@ -131,7 +131,7 @@ namespace UI
             _reloadElapsed += Time.deltaTime;
             
             var progress = _reloadTimePerAmmo > 0f ? _reloadElapsed / _reloadTimePerAmmo : 1f;
-            var currentAmmo = Mathf.Min(_reloadStartAmmo + progress, _reloadTargetAmmo);
+            var currentAmmo = Mathf.Min(progress, _reloadTargetAmmo);
 
             UpdatePipsFill(currentAmmo);
 
