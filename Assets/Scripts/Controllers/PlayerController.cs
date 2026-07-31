@@ -29,6 +29,7 @@ namespace Controllers
         private InventoryHandler _inventoryHandler;
         
         private Vector3 _knockbackVelocity;
+        private bool _isDisable;
 
         private readonly Plane _groundPlane = new Plane(Vector3.up, Vector3.zero);
 
@@ -76,6 +77,9 @@ namespace Controllers
         {
             HandleMovement();
             HandleAiming();
+            
+            if (_isDisable) return;
+            
             HandleShooting();
             HandleSwitchingWeapon();
             HandleSwitchingItem();
@@ -95,6 +99,10 @@ namespace Controllers
             Debug.Log("Player has died.");
         }
 
+        public void Disable() => _isDisable = true;
+        
+        public void Enable() => _isDisable = false;
+        
         // Movement
         private void HandleMovement()
         {

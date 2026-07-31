@@ -56,7 +56,7 @@ namespace UI
                 else _slots[i].SetItem(
                     item.Data.icon,
                     item.CurrentStacks,
-                    item.Stats.maxStack,
+                    item.Data.maxStack,
                     item.Data is UsableItemData);
             }
         }

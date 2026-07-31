@@ -49,7 +49,7 @@ namespace Runtime.Spawners
             loot.Init(itemData, quantity, collectDelay);
         }
 
-        public void SpawnFromDropTable(DropData[] dropTable, Vector3 position)
+        public void SpawnFromDropTable(RewardData[] dropTable, Vector3 position)
         {
             foreach (var drop in dropTable)
             {

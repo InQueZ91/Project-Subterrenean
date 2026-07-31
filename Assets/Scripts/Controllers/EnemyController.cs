@@ -24,6 +24,7 @@ namespace Controllers
         
         // State
         private Vector3 _knockbackVelocity;
+        private bool _isDisable;
 
         [Header("Events")] 
         public UnityEvent<RewardStats, Vector3> OnDied { get; } = new();
@@ -55,6 +56,8 @@ namespace Controllers
 
         private void Update()
         {
+            if (_isDisable) return;
+            
             if (_target == null) return;
             
             if (_movementHandler.IsStaggered()) return;
@@ -68,6 +71,10 @@ namespace Controllers
 
             HandleMoveSelection();
         }
+        
+        public void Disable() => _isDisable = true;
+
+        public void Enable() => _isDisable = false;
 
         #region Move Selection
 

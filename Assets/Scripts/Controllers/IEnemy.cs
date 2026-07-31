@@ -5,7 +5,7 @@ using UnityEngine.Events;
 namespace Controllers
 {
     public interface IEnemy
-    { 
+    {
         UnityEvent<RewardStats, Vector3> OnDied { get; }
     }
 }
