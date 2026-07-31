@@ -6,6 +6,6 @@ namespace Data.Stats
     public struct RewardStats
     {
         public int scoreValue;
-        public DropData[] drops;
+        public RewardData[] drops;
     }
 }

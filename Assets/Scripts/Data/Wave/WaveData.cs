@@ -11,6 +11,6 @@ namespace Data.Wave
         public WaveSpawn[] spawns;
         
         [Header("Rewards")]
-        public DropData[] itemRewardPool;
+        public RewardData[] itemRewardPool;
     }
 }

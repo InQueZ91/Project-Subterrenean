@@ -5,7 +5,7 @@ using UnityEngine;
 namespace Data
 {
     [Serializable]
-    public class DropData
+    public class RewardData
     {
         public ItemData itemData;
         [Min(1)]public int quantity;

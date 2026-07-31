@@ -3,18 +3,18 @@ using UnityEngine;
 
 namespace UI
 {
-    public class ScoreUI : MonoBehaviour
+    public class PointUI : MonoBehaviour
     {
         [SerializeField] private TextMeshProUGUI scoreText;
 
         private void Start()
         {
-            scoreText.text = "0";
+            scoreText.text = "CP:0";
         }
 
-        private void OnScoreChanged(int newScore)
+        public void OnPointChanged(int result, int change)
         {
-            scoreText.text = newScore.ToString();
+            scoreText.text = $"CP:{result}";
         }
     }
 }

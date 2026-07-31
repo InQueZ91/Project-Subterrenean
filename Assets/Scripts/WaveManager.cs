@@ -1,11 +1,14 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Controllers;
 using Data.Stats;
 using Data.Wave;
 using Runtime.Spawners;
 using UnityEngine;
 using UnityEngine.Events;
+using Random = UnityEngine.Random;
 
 public class WaveManager : MonoBehaviour
 {
@@ -37,7 +40,7 @@ public class WaveManager : MonoBehaviour
         }
         Instance = this;
     }
-
+    
     private void OnDestroy()
     {
         if (Instance == this) Instance = null;
@@ -47,7 +50,8 @@ public class WaveManager : MonoBehaviour
     {
         StartCoroutine(RunWave(_currentWaveIndex));
     }
-
+    
+    // Methods
     public void StartNextWave()
     {
         if (_currentWaveIndex >= waves.Count) return;
@@ -146,17 +150,20 @@ public class WaveManager : MonoBehaviour
         var go = Instantiate(prefab, point.transform.position, Quaternion.identity);
         go.name = $"Enemy {_currentWaveIndex}-{_enemiesSpawned + 1}";
         go.transform.SetParent(transform);
+        
         var enemy = go.GetComponent<IEnemy>();
         enemy?.OnDied.AddListener(OnEnemyDied);
-        
+
         _enemiesAlive++;
     }
 
     private void OnEnemyDied(RewardStats rewards, Vector3 spawnPosition)
     {
-        _enemiesAlive = Mathf.Max(0, _enemiesAlive - 1);
+        _enemiesAlive = Mathf.Max(0, _enemiesAlive--);
         
-        ScoreManager.Instance.AddScore(rewards.scoreValue);
-        LootSpawner.Instance.SpawnFromDropTable(rewards.drops, spawnPosition);
+        PointManager.Instance.Gain(rewards.scoreValue);
+        
+        // Spawn crush object
+        // LootSpawner.Instance.SpawnFromDropTable(rewards.drops, spawnPosition);
     }
 }
