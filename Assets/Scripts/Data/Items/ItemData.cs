@@ -1,11 +1,11 @@
-﻿using Data.Stats;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Data.Items
 {
     public abstract class ItemData : ScriptableObject
     {
-        public ItemStats itemStats;
+        [Min(1)]
+        public int maxStack;
         
         [Header("Visuals")]
         public GameObject lootPrefab;

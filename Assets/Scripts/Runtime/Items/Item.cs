@@ -10,13 +10,11 @@ namespace Runtime.Items
     public class Item
     {
         public ItemData Data { get; }
-        public ItemStats Stats { get; set; }
         public int CurrentStacks { get; private set; }
 
-        public Item(ItemData data, ItemStats resolvedStats, int stacks = 1)
+        public Item(ItemData data, int stacks = 1)
         {
             Data = data;
-            Stats = resolvedStats;
             CurrentStacks = stacks;
         }
 
@@ -40,8 +38,7 @@ namespace Runtime.Items
 
         public bool TryStack()
         {
-            if (!Stats.isStackable) return false;
-            if (CurrentStacks >= Stats.maxStack) return false;
+            if (CurrentStacks >= Data.maxStack) return false;
             
             CurrentStacks++;
             return true;
