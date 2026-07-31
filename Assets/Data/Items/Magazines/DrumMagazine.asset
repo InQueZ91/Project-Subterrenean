@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d5461ce9d8fe417abf38d546c7eef61f, type: 3}
-  m_Name: SlugPacks
-  m_EditorClassIdentifier: Assembly-CSharp::Data.Items.Ammo
+  m_Name: DrumMagazine
+  m_EditorClassIdentifier: Assembly-CSharp::Data.Items.MagazineItem
   maxStack: 5
   lootPrefab: {fileID: 4871147286282597990, guid: 5c29d2ae8fd57bb4e81f60194beb9364, type: 3}
-  icon: {fileID: 21300000, guid: cacd1dd8c920d9346afd1c922e854daa, type: 3}
-  type: {fileID: 11400000, guid: f061c7cdf6514734e9ab41278903f511, type: 2}
-  capacity: 6
-  reloadDuration: 3
-  outputData: {fileID: 11400000, guid: 6a242011c23322241be078033a4bf3ba, type: 2}
+  icon: {fileID: 21300000, guid: 2787e31ab1c80de42bf58f36a748d8f2, type: 3}
+  type: {fileID: 11400000, guid: ed99e18eaf47b8c439c3eac1d820e673, type: 2}
+  capacity: 128
+  reloadDuration: 5
+  outputData: {fileID: 11400000, guid: 6024dbf32d3e1174b822c25f9923283a, type: 2}

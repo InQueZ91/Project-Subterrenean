@@ -12,9 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 67f332be925e41f18c180812eeeeae1d, type: 3}
   m_Name: FragGrenade
   m_EditorClassIdentifier: Assembly-CSharp::Data.Items.Grenade
-  itemStats:
-    maxStack: 4
-    isStackable: 1
+  maxStack: 5
   lootPrefab: {fileID: 4871147286282597990, guid: 5c29d2ae8fd57bb4e81f60194beb9364, type: 3}
   icon: {fileID: 21300000, guid: 8e554db7bb766054fb9dca01afc41405, type: 3}
   spawnPrefab: {fileID: 6563199809735589973, guid: 2c433543283745f4a84ddf0b62161870, type: 3}

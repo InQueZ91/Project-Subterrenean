@@ -12,9 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1f3f1f5a1c643cd8b57590158b5a608, type: 3}
   m_Name: Claymore
   m_EditorClassIdentifier: Assembly-CSharp::Data.Items.Claymore
-  itemStats:
-    maxStack: 12
-    isStackable: 1
+  maxStack: 5
   lootPrefab: {fileID: 4871147286282597990, guid: 5c29d2ae8fd57bb4e81f60194beb9364, type: 3}
   icon: {fileID: 21300000, guid: 5fd86ae8f82076b4bb7db7e48c2bd44a, type: 3}
   spawnPrefab: {fileID: 6563199809735589973, guid: 27e7cf73c524dd24fad2c5878ac733bf, type: 3}
