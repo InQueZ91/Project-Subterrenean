@@ -7,5 +7,16 @@ namespace Data.Items.Crafting
     {
         public ItemData item;
         public int quantity;
+
+        public ItemPack()
+        {
+            
+        }
+        
+        public ItemPack(ItemData item, int quantity)
+        {
+            this.item = item;
+            this.quantity = quantity;
+        }
     }
 }

@@ -79,11 +79,7 @@ namespace Runtime.Handlers.Machine
             var remaining = quantity;
             foreach (var stack in _storage.Where(i => i.Data == itemData).ToList())
             {
-                while (remaining > 0 && stack.CurrentStacks > 0)
-                {
-                    stack.Consume();
-                    remaining--;
-                }
+                while (stack.TryConsume()) remaining--;
 
                 if (remaining <= 0) break;
             }
@@ -131,7 +127,6 @@ namespace Runtime.Handlers.Machine
             foreach (var itemGroup in _storage.GroupBy(i => i.Data))
             {
                 var maxStack = itemGroup.Key.maxStack;
-                if (maxStack <= 0) continue;
 
                 var remaining = itemGroup.Sum(i => i.CurrentStacks);
 

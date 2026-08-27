@@ -58,7 +58,7 @@ namespace Runtime.Handlers
 
         private void SpawnDrop(Item item)
         {
-            item.Consume();
+            item.TryConsume();
             LootSpawner.Instance.Spawn(item.Data, 1, transform.position);
         }
 
@@ -92,12 +92,10 @@ namespace Runtime.Handlers
             var magazineItem = GetItemByMagazineType(type);
             if (magazineItem == null) return;
             
-            magazineItem.Consume();
-
             // Clean up the slot if empty
-            if (magazineItem.CurrentStacks <= 0)
+            if (!magazineItem.TryConsume())
                 _inventory.Remove(magazineItem);
-
+            
             Compact();
             NotifyInventoryChanged();
         }
@@ -147,7 +145,6 @@ namespace Runtime.Handlers
             foreach (var itemGroup in _inventory.GroupBy(i => i.Data))
             {
                 var maxStack = itemGroup.Key.maxStack;
-                if (maxStack <= 0) continue;
 
                 var remaining = itemGroup.Sum(i => i.CurrentStacks);
 

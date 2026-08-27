@@ -1,7 +1,6 @@
 ﻿using System;
 using Data.Items;
-using Data.Stats;
-using Runtime.Handlers;
+using Data.Items.Crafting;
 using UnityEngine;
 
 namespace Runtime.Items
@@ -21,19 +20,18 @@ namespace Runtime.Items
         public bool Use(GameObject user)
         {
             if (Data is not UsableItemData usable) return false;
-            if (CurrentStacks <= 0) return false;
-
-            usable.Use(user);
+            if (TryConsume()) return false;
             
-            Consume();
+            usable.Use(user);
             
             return true;
         }
         
-        public void Consume()
+        public bool TryConsume()
         {
-            if (CurrentStacks <= 0) return;
+            if (CurrentStacks - 1 < 0) return false;
             CurrentStacks--;
+            return true;
         }
 
         public bool TryStack()
@@ -42,6 +40,11 @@ namespace Runtime.Items
             
             CurrentStacks++;
             return true;
+        }
+
+        public ItemPack ToPack()
+        {
+            return new ItemPack { item = Data, quantity = CurrentStacks };
         }
     }
 }
