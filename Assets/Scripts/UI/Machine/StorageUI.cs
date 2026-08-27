@@ -16,6 +16,11 @@ namespace UI.Machine
         [Header("Event")]
         public UnityEvent<int> onAddItemToInventory; // item index
         
+        private void Start()
+        {
+            RebuildSlots(new List<Item>(), 21);
+        }
+        
         public void RebuildSlots(List<Item> items, int inventoryCapacity)
         {
             // Only rebuild structure if capacity changed
