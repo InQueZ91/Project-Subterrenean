@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Data.Modules
 {
-    [CreateAssetMenu(fileName = "New Converter Data", menuName = "Game/Modules/New Converter")]
+    [CreateAssetMenu(fileName = "New Converter Data", menuName = "Game/Modules/Converter")]
     public class ConverterData : ModuleData<Converter>
     {
         public List<ConversionRecipe> conversionRecipes;

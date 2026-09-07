@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Data.Modules
 {
-    [CreateAssetMenu(fileName = "New Conversion Recipe",menuName = "Game/Modules/Converter/Conversion Recipe")]
+    [CreateAssetMenu(fileName = "New Conversion Recipe",menuName = "Game/Modules/Conversion Recipe")]
     public class ConversionRecipe : ScriptableObject
     {
         public ItemPack input;

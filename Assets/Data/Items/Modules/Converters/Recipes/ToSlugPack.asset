@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 819d6e074ac048d68c4e711dbd1cdefc, type: 3}
-  m_Name: MagToLongMag
+  m_Name: ToSlugPack
   m_EditorClassIdentifier: Assembly-CSharp::Data.Modules.ConversionRecipe
   input:
-    item: {fileID: 11400000, guid: d9b9dc5ce43a8ac4e960ae2f6804bfda, type: 2}
-    quantity: 2
+    item: {fileID: 11400000, guid: f716b767a0dc0bb42b56eb39b38c37db, type: 2}
+    quantity: 3
   output:
-    item: {fileID: 11400000, guid: 24de299ce2fad294d933e9044aee7c6a, type: 2}
+    item: {fileID: 11400000, guid: 2df9a7283ada3c646bad049f0cd47410, type: 2}
     quantity: 1
-  conversionTime: 1
+  conversionTime: 2

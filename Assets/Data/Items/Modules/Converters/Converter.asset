@@ -19,6 +19,7 @@ MonoBehaviour:
   processingDuration: 3
   moduleUIPrefab: {fileID: 0}
   conversionRecipes:
+  - {fileID: 11400000, guid: 18851f43af8f4dc44a67467761d90ff5, type: 2}
+  - {fileID: 11400000, guid: 82748fb087d5a474dba8b0f308b05b84, type: 2}
   - {fileID: 11400000, guid: 8685d96a89f1a874bb876aa7a7080bfe, type: 2}
   - {fileID: 11400000, guid: c288d61bc9b33904daeaebff14e7ae02, type: 2}
-  - {fileID: 11400000, guid: 82748fb087d5a474dba8b0f308b05b84, type: 2}

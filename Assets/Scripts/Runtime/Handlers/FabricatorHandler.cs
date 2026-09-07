@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Data;
+using Data.Items;
 using Data.Items.Crafting;
 using Data.Modules;
 using Data.Stats;
@@ -12,9 +14,8 @@ namespace Runtime.Handlers
 {
     public class FabricatorHandler : MonoBehaviour
     {
-        [Header("Configuration")] [SerializeField]
-        private float pickupRadius = 2f;
-
+        [Header("Configuration")] 
+        [SerializeField] private float pickupRadius = 2f;
         [SerializeField] private int storageCapacity = 21;
         [SerializeField] private ItemPack[] startingItems;
         [SerializeField] private List<FabricatorStats> startingFabricator = new();
@@ -27,7 +28,10 @@ namespace Runtime.Handlers
         private Storage _itemStorage;
         private readonly List<Fabricator> _fabricators = new();
         private bool _isToggled;
+        
         private Module _selectedModule;
+        // Track previous selection to avoid firing onModuleSelected every frame.
+        private Module _lastReportedModule;
 
         #region Unity's life cycle
 
@@ -45,15 +49,13 @@ namespace Runtime.Handlers
             foreach (var stats in startingFabricator)
                 AddFabricator(new Fabricator(stats.moduleSlots));
         }
-
+        
         private void Update()
         {
             if (!_isToggled) return;
-            
-            _fabricators.ForEach(fabricator => fabricator
-                .Run(Time.deltaTime, _itemStorage));
-            
-            onFabricatorChanged?.Invoke(_fabricators);
+
+            RunFabricators();
+            onModuleSelected?.Invoke(_selectedModule);
         }
 
         private void OnDestroy()
@@ -63,11 +65,36 @@ namespace Runtime.Handlers
 
         #endregion
 
-        // API
+        #region Public API
+
+        public void ConsumeMagazineItem(MagazineType type)
+        {
+            var magazineItem = GetItemByMagazineType(type);
+            if (magazineItem == null) return;
+
+            var item = magazineItem.ToPack();
+            item.quantity = 1;
+            _itemStorage.TryPull(item);
+        }
+        
+        public Item GetItemByMagazineType(MagazineType type)
+        {
+            return _itemStorage.Container.First(i => i.Data is MagazineItem a && a.type == type);
+        }
+        
+        public int AddToStorage(ItemPack itemPack)
+        {
+            return _itemStorage.ForceAdd(itemPack);
+        }
+        
         public void SelectRecipe(int recipeIndex)
         {
             if (_selectedModule is not Converter converter) return;
             converter.TrySetRecipe(recipeIndex);
+            
+            _selectedModule = converter;
+            onModuleSelected?.Invoke(converter);
+            _lastReportedModule = converter;
         }
         
         public void SelectModule(int fabIndex, int moduleIndex)
@@ -77,6 +104,7 @@ namespace Runtime.Handlers
             
             _selectedModule = module;
             onModuleSelected?.Invoke(module);
+            _lastReportedModule = module;
         }
         
         public void SetFabricatorsState(bool state)
@@ -89,7 +117,6 @@ namespace Runtime.Handlers
             if (_itemStorage.Container[itemIndex].Data is not ModuleData moduleData) return;
             
             _itemStorage.RemoveAt(itemIndex);
-            
             AttachModule(fabIndex, moduleData, moduleIndex);
         }
         
@@ -97,63 +124,154 @@ namespace Runtime.Handlers
         {
             if (_fabricators.Count >= startingFabricator.Count)
             {
-                Debug.LogWarning("FabricatorHandler: cannot add more fabricators.");
+                Debug.LogWarning("FabricatorHandler: fabricator slot limit reached.");
                 return;
             }
 
             _fabricators.Add(fabricator);
+            RewireCombinators();
             onFabricatorChanged?.Invoke(_fabricators);
         }
 
         public void RemoveFabricator(int index)
         {
-            if (index >= _fabricators.Count)
+            if (index < 0 || index >= _fabricators.Count)
             {
-                Debug.LogWarning("FabricatorHandler: cannot remove fabricator at index " + index);
+                Debug.LogWarning($"FabricatorHandler: invalid fabricator index {index}.");
                 return;
             }
 
             _fabricators.RemoveAt(index);
+            RewireCombinators();
+            onFabricatorChanged?.Invoke(_fabricators);
         }
 
         public void AttachModule(int fabricatorIndex, ModuleData moduleData, int moduleIndex)
         {
-            var fabricator = _fabricators[fabricatorIndex];
-            if (fabricator == null) return;
+            if (!IsValidFabricatorIndex(fabricatorIndex)) return;
 
-            if (!fabricator.AttachModule(moduleData, moduleIndex))
+            if (!_fabricators[fabricatorIndex].AttachModule(moduleData, moduleIndex))
             {
-                Debug.Log($"Attach Module to fabricator:{fabricatorIndex}, slot:{moduleIndex} failed.");
+                Debug.Log($"Attach Module failed - fabricator:{fabricatorIndex}, slot:{moduleIndex}.");
+                return;
             }
             
+            // Wiring may have changed if the new module is a Combinator.
+            RewireCombinators();
             onFabricatorChanged?.Invoke(_fabricators);
         }
 
         public void DetachModule(int fabricatorIndex, int moduleIndex)
         {
+            if (!IsValidFabricatorIndex(fabricatorIndex)) return;
+            
             var fabricator = _fabricators[fabricatorIndex];
-            if (fabricator == null) return;
 
             if (fabricator.Modules[moduleIndex] == _selectedModule)
             {
                 _selectedModule = null;
+                _lastReportedModule = null;
                 onModuleSelected?.Invoke(null);
             }
             
-            var moduleData = fabricator.DetachModule(moduleIndex);
-            if (moduleData == null) return;
-
-            var toItem = new ItemPack(item: moduleData, quantity: 1);
-            _itemStorage.TryAdd(toItem);
+            var detachedModule = fabricator.DetachModule(moduleIndex);
+            if (detachedModule == null) return;
             
+            // Return module contents and the module item itself to storage
+            var itemsToReturn = detachedModule.PullAll();
+            itemsToReturn.Add(new ItemPack(item: detachedModule.SourceData, quantity: 1));
+            foreach (var item in itemsToReturn)
+                _itemStorage.TryAdd(item);
+            
+            // Wiring may have changed if the detached module was a Combinator.
+            RewireCombinators();
             onFabricatorChanged?.Invoke(_fabricators);
             OnItemStorageChanged();
         }
+
+        // Called by UI when the user picks which fabricator line to connect to a Combinator.
+        // fabricatorIndex: the fabricator that owns the Combinator.
+        // connectedFabricatorIndex: the fabricator whose last-module buffer feeds into it.
+        public void SetCombinatorConnection(int fabricatorIndex, int connectedFabricatorIndex)
+        {
+            if (!IsValidFabricatorIndex(fabricatorIndex)) return;
+            
+            var fabricator = _fabricators[fabricatorIndex];
+            var combinator = fabricator.Modules.OfType<Combinator>().FirstOrDefault();
+
+            if (connectedFabricatorIndex < 0 || connectedFabricatorIndex >= _fabricators.Count)
+            {
+                combinator?.SetConnectedBuffer(null);
+                _fabricators[fabricatorIndex].SetBypassing(false);
+                return;
+            }
+            
+            var connectedFab = _fabricators[connectedFabricatorIndex];
+            combinator?.SetConnectedBuffer(connectedFab.LastModule);
+            connectedFab.SetBypassing(true);
+            
+            onFabricatorChanged?.Invoke(_fabricators);
+        }
+
+        #endregion
+
+        #region Private
+
+        private void RunFabricators()
+        {
+            foreach (var fabricator in _fabricators)
+                fabricator?.Run(Time.deltaTime, _itemStorage);
+            
+            onFabricatorChanged?.Invoke(_fabricators);
+        }
+
+        // Rewire is called once whenever the fabricator list or module layout changes,
+        // not every frame. Keeps cross-fabricator logic out of the hot path.
+        private void RewireCombinators()
+        {
+            // Reset all bypass states first.
+            foreach (var fab in _fabricators)
+                fab?.SetBypassing(false);
+
+            for (var i = 0; i < _fabricators.Count; i++)
+            {
+                var fabricator = _fabricators[i];
+
+                var combinator = fabricator?.Modules.OfType<Combinator>().FirstOrDefault();
+                if (combinator == null) continue;
+                
+                // Only wire to an adjacent line if one exists - no wrap-around;
+                // Default: connect to the next fabricator if present.
+                // This overridden by SetCombinatorConnection when the user
+                // explicitly picks a line from the UI.
+                if (combinator.HasConnectedBuffer || i + 1 >= _fabricators.Count) continue;
+                var next = _fabricators[i + 1];
+                if (next == null) continue;
+                
+                combinator.SetConnectedBuffer(next.LastModule);
+                next.SetBypassing(true);
+            }
+        }
         
-        // Helpers
+        private void NotifyModuleSelectionIfChanged()
+        {
+            if (_lastReportedModule == _selectedModule) return;
+            onModuleSelected?.Invoke(_selectedModule);
+            _lastReportedModule = _selectedModule;
+        }
+        
         private void OnItemStorageChanged()
         {
             onMaterialStorageChanged?.Invoke(_itemStorage.Container.ToList(), storageCapacity);
         }
+
+        private bool IsValidFabricatorIndex(int index)
+        {
+            if (index >= 0 && index < _fabricators.Count) return true;
+            Debug.LogWarning($"FabricatorHandler: fabricator index {index} out of range.");
+            return false;
+        }
+
+        #endregion
     }
 }

@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using Data.Items.Crafting;
 using Data.Modules;
 
@@ -11,6 +10,7 @@ namespace Runtime.Modules
         private readonly ConversionRecipe[] _recipes;
         
         // Runtime
+        public ConversionRecipe CurrentRecipe => _currentRecipe;
         private ConversionRecipe _currentRecipe;
         private ItemPack Input => _currentRecipe.input;
         private ItemPack Output => _currentRecipe.output;
@@ -24,7 +24,6 @@ namespace Runtime.Modules
         public bool TrySetRecipe(int index)
         {
             if (index >= _recipes.Length) return false;
-            
             if (State == ModuleState.Processing) return false;
             
             var recipe = _recipes[index];
@@ -35,20 +34,13 @@ namespace Runtime.Modules
             return true;
         }
         
-        protected override bool TryBegin(List<ItemBuffer> connectedModules)
+        protected override bool TryBegin(ItemBuffer upstream)
         {
             if (_currentRecipe is null) return false;
+            if (upstream == null) return false;
+            if (upstream.AvailableCount(Input.item) < Input.quantity) return false;
             
-            var totalAvailable = connectedModules.Sum(m => m.AvailableCount(Input.item));
-            if (totalAvailable < Input.quantity) return false; // Fail
-            
-            var required = Input.quantity;
-            foreach (var module in connectedModules)
-            {
-                if (required <= 0) break;
-                required -= module.ForcePull(new ItemPack(Input.item, required));
-            }
-            
+            upstream.ForcePull(Input);
             return true; // Success
         }
 

@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Data.Modules;
+﻿using Data.Modules;
 
 namespace Runtime.Modules
 {
@@ -16,10 +15,12 @@ namespace Runtime.Modules
             SourceData = data;
         }
 
-        public bool TryProcess(List<ItemBuffer> connectedModules)
+        // Try to start a processing cycle.
+        // Returns true if successfully started.
+        public bool TryProcess(ItemBuffer upstream)
         {
             if (State != ModuleState.Starved) return false;
-            if (!TryBegin(connectedModules)) return false;
+            if (!TryBegin(upstream)) return false;
             
             ElapsedTime = 0;
             State = ModuleState.Processing;
@@ -32,21 +33,34 @@ namespace Runtime.Modules
             ElapsedTime += deltaTime;
         }
         
-        private bool IsReadyToComplete => State == ModuleState.Processing && ElapsedTime >= ProcessingDuration;
-        
+        // Try to complete a finished cycle.
+        // Blocked → re-attempt each tick until the output buffer has room.
+        // Returns true if the output was successfully deposited.
         public bool CompleteProcess()
         {
-            if (!IsReadyToComplete) return false;
+            // Re-attempt if we were blocked last tick (output was full)
+            if (State == ModuleState.Blocked)
+            {
+                if (!TryComplete()) return false;
+                State = ModuleState.Starved;
+                return true;
+            }
+            
+            if (State != ModuleState.Processing) return false;
+            if (ElapsedTime < ProcessingDuration) return false;
+            
             if (!TryComplete())
             {
+                // Output buffer full — hold until space clears
                 State = ModuleState.Blocked;
                 return false;
             }
+ 
             State = ModuleState.Starved;
             return true;
         }
         
-        protected abstract bool TryBegin(List<ItemBuffer> connectedModules);
+        protected abstract bool TryBegin(ItemBuffer upstream);
 
         protected abstract bool TryComplete();
     }

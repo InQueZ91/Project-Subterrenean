@@ -7,44 +7,50 @@ namespace Runtime.Modules
 {
     public class Fabricator
     {
-        private int ModuleLimit { get; set; }
         private readonly Module[] _modules;
+
+        // When true, this fabricator does not push its output back to the main storage.
+        // Set internally when another fabricator's Combinator connects to this one.
+        private bool _isBypassing;
+        
         public IReadOnlyList<Module> Modules => _modules;
+        private int ModuleLimit { get; }
+        
         public Fabricator(int moduleLimit)
         {
             ModuleLimit = moduleLimit;
             _modules = new Module[moduleLimit];
         }
+        
+        public Module LastModule => _modules.LastOrDefault(m => m != null);
+        public void SetBypassing(bool bypassing) => _isBypassing = bypassing;
 
-        public void Run(float deltaTime, ItemBuffer storage)
+        public void Run(float deltaTime, ItemBuffer mainStorage)
         {
             // Pass 1 - advance timers
             foreach (var module in _modules)
                 module?.Tick(deltaTime);
             
-            // Pass 2 - try complete, then try to begin, front to back
-            var previousSource = storage;
-            for (var i = 0; i < _modules.Length; i++)
+            // Pass 2 - complete, then begin front to back
+            var previousBuffer = mainStorage;
+            foreach (var module in _modules)
             {
-                var module = _modules[i];
                 if (module == null) continue;
                 
                 module.CompleteProcess();
-                module.TryProcess(BuildInputs(previousSource));
-
-                previousSource = module;
+                module.TryProcess(previousBuffer);
+                
+                previousBuffer = module;
             }
             
-            // Pass 3 - pull item from lastest module to crafted storage
-            var lastModule = _modules.LastOrDefault(m => m != null);
-            if (lastModule == null) return;
+            // Pass 3 - flush last module output to main storage (unless bypassing)
+            if (_isBypassing) return;
             
-            foreach (var item in lastModule.PullAll())
-            {
-                // If storage is full, put it back in last module
-                if (!storage.TryAdd(item)) 
-                    lastModule.TryAdd(item);
-            }
+            var last = LastModule;
+            if (last == null) return;
+            
+            foreach (var item in last.PullAll().Where(item => !mainStorage.TryAdd(item))) 
+                last.TryAdd(item);
         }
         
         public bool AttachModule(ModuleData moduleData, int slotIndex)
@@ -57,7 +63,7 @@ namespace Runtime.Modules
             return true;
         }
 
-        public ModuleData DetachModule(int slotIndex)
+        public Module DetachModule(int slotIndex)
         {
             if (slotIndex >= ModuleLimit) return null;
             if (_modules[slotIndex] == null)
@@ -69,7 +75,7 @@ namespace Runtime.Modules
             var module = _modules[slotIndex];
             _modules[slotIndex] = null;
             
-            return module.SourceData;
+            return module;
         }
 
         public bool SwapModule(int slotIndexA, int slotIndexB)
@@ -79,14 +85,6 @@ namespace Runtime.Modules
             
             (_modules[slotIndexA], _modules[slotIndexB]) = (_modules[slotIndexB], _modules[slotIndexA]);
             return true;
-        }
-        
-        // Helpers
-        private List<ItemBuffer> BuildInputs(ItemBuffer source)
-        {
-            var inputs = new List<ItemBuffer>();
-            if (source != null) inputs.Add(source);
-            return inputs;
         }
     }
 }
