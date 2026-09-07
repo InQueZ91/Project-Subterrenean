@@ -203,7 +203,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0.2679245, g: 0.2679245, b: 0.2679245, a: 1}
+  m_Color: {r: 0.26666668, g: 0.26666668, b: 0.26666668, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -244,10 +244,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41efafda18344a87b3d15b5ef4be2199, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UI.Fabricator.ConversionRecipeUI
+  background: {fileID: 4369845725591706537}
   inputItem: {fileID: 4457100527786529750}
   quantityText: {fileID: 7843768516085832513}
   outputItem: {fileID: 5686553290988414897}
   outputQuantityText: {fileID: 3668290426068826029}
+  selectedColor: {r: 0.79622644, g: 0.79622644, b: 0.79622644, a: 1}
+  unselectedColor: {r: 0.26666668, g: 0.26666668, b: 0.26666668, a: 1}
 --- !u!114 &7459247554334333483
 MonoBehaviour:
   m_ObjectHideFlags: 0

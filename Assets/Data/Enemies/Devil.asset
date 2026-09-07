@@ -24,9 +24,6 @@ MonoBehaviour:
   rewards:
     scoreValue: 2000
     drops:
-    - itemData: {fileID: 11400000, guid: f720f900a20e5f04a9e8f139d46c6297, type: 2}
-      quantity: 1
-      chance: 0.5
-    - itemData: {fileID: 11400000, guid: ec204471351cc5840ba6a05fd927d56d, type: 2}
-      quantity: 2
-      chance: 0.5
+    - itemData: {fileID: 11400000, guid: f716b767a0dc0bb42b56eb39b38c37db, type: 2}
+      quantity: 20
+      chance: 1

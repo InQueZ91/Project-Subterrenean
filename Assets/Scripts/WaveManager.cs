@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using Controllers;
 using Data.Stats;
 using Data.Wave;
@@ -16,6 +14,7 @@ public class WaveManager : MonoBehaviour
     [SerializeField] private Vector3 playerSpawnPosition;
     [SerializeField] private List<WaveData> waves;
     [SerializeField] private List<SpawnPoint> spawnPoints;
+    [SerializeField] private bool isActivated = false;
 
     [Header("Events")] 
     public UnityEvent<int> onWaveStarted;
@@ -62,6 +61,8 @@ public class WaveManager : MonoBehaviour
 
     private IEnumerator RunWave(int index)
     {
+        if (!isActivated) yield break;
+        
         // Check if all waves are cleared
         if (index >= waves.Count)
         {
@@ -159,11 +160,11 @@ public class WaveManager : MonoBehaviour
 
     private void OnEnemyDied(RewardStats rewards, Vector3 spawnPosition)
     {
-        _enemiesAlive = Mathf.Max(0, _enemiesAlive--);
+        _enemiesAlive = Mathf.Max(0, _enemiesAlive - 1);
         
-        PointManager.Instance.Gain(rewards.scoreValue);
+        // PointManager.Instance.Gain(rewards.scoreValue);
         
         // Spawn crush object
-        // LootSpawner.Instance.SpawnFromDropTable(rewards.drops, spawnPosition);
+        LootSpawner.Instance.SpawnFromDropTable(rewards.drops, spawnPosition);
     }
 }

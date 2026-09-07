@@ -1,8 +1,8 @@
 using Data;
-using Data.Stats;
 using Runtime;
 using Runtime.Handlers;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.InputSystem;
 
 namespace Controllers
@@ -11,6 +11,7 @@ namespace Controllers
     [RequireComponent(typeof(Unit))]
     [RequireComponent(typeof(WeaponHandler))]
     [RequireComponent(typeof(InventoryHandler))]
+    [RequireComponent(typeof(FabricatorHandler))]
     public class PlayerController : MonoBehaviour
     {
         [SerializeField] private CharacterData data;
@@ -18,6 +19,9 @@ namespace Controllers
         [Header("References")] 
         [SerializeField] private Transform cameraTransform;
 
+        [Header("Events")] 
+        public UnityEvent<bool> onProductionLineToggled;
+        
         // Private state
         private Camera _cam;
         private CharacterController _cc;
@@ -27,9 +31,12 @@ namespace Controllers
         private Unit _unit;
         private WeaponHandler _weaponHandler;
         private InventoryHandler _inventoryHandler;
+        private FabricatorHandler _fabricatorHandler;
         
         private Vector3 _knockbackVelocity;
         private bool _isDisable;
+        
+        private bool _isProductionLineOpened;
 
         private readonly Plane _groundPlane = new Plane(Vector3.up, Vector3.zero);
 
@@ -43,6 +50,7 @@ namespace Controllers
             _unit = GetComponent<Unit>();
             _weaponHandler = GetComponent<WeaponHandler>();
             _inventoryHandler = GetComponent<InventoryHandler>();
+            _fabricatorHandler = GetComponent<FabricatorHandler>();
 
             if (cameraTransform == null && _cam != null)
                 cameraTransform = _cam.transform;
@@ -55,11 +63,16 @@ namespace Controllers
             _unit.onDied.AddListener(OnDied);
             
             _weaponHandler.Init(data.startingWeapons);
-            _inventoryHandler.Init(data.startingItems);
+            // _inventoryHandler.Init(data.startingItems);
+            // _fabricatorHandler.Init(data.startingItems);
+            
+            onProductionLineToggled?.Invoke(_isProductionLineOpened);
             
             // Wire
-            _weaponHandler.onMagazineRequested = _inventoryHandler.GetItemByMagazineType;
-            _weaponHandler.onMagazineConsumed = _inventoryHandler.ConsumeMagazineItem;
+            // _weaponHandler.onMagazineRequested = _inventoryHandler.GetItemByMagazineType;
+            // _weaponHandler.onMagazineConsumed = _inventoryHandler.ConsumeMagazineItem;
+            _weaponHandler.onMagazineRequested = _fabricatorHandler.GetItemByMagazineType;
+            _weaponHandler.onMagazineConsumed = _fabricatorHandler.ConsumeMagazineItem;
         }
 
         private void OnEnable()
@@ -77,8 +90,9 @@ namespace Controllers
         {
             HandleMovement();
             HandleAiming();
+            HandleProductionLine();
             
-            if (_isDisable) return;
+            if (_isDisable || _isProductionLineOpened) return;
             
             HandleShooting();
             HandleSwitchingWeapon();
@@ -200,6 +214,17 @@ namespace Controllers
 
             if (_actions.Player.PreviousItem.WasPressedThisFrame())
                 _inventoryHandler.SwitchItem(_inventoryHandler.CurrentItemIndex - 1);
+        }
+
+        private void HandleProductionLine()
+        {
+            if (_fabricatorHandler == null) return;
+
+            if (_actions.Player.ProductionPanel.WasPressedThisFrame())
+            {
+                _isProductionLineOpened = !_isProductionLineOpened;
+                onProductionLineToggled?.Invoke(_isProductionLineOpened);
+            }
         }
     }
 }

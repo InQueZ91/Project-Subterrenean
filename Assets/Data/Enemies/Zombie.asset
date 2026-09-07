@@ -18,29 +18,12 @@ MonoBehaviour:
     rotationSpeed: 120
     knockbackDecay: 6
     knockbackResistance: 1
+  visionAngle: 30
   combatMoves:
   - {fileID: 11400000, guid: 042c2aaee489bca4786675179871dbfd, type: 2}
   rewards:
     scoreValue: 500
     drops:
-    - itemData: {fileID: 11400000, guid: 0a5422d1f6c6e0c45b60ebf88ff1ec59, type: 2}
-      quantity: 10
-      chance: 0.4
-    - itemData: {fileID: 11400000, guid: 2df9a7283ada3c646bad049f0cd47410, type: 2}
+    - itemData: {fileID: 11400000, guid: f716b767a0dc0bb42b56eb39b38c37db, type: 2}
       quantity: 5
-      chance: 0.3
-    - itemData: {fileID: 11400000, guid: ec204471351cc5840ba6a05fd927d56d, type: 2}
-      quantity: 1
-      chance: 0.1
-    - itemData: {fileID: 11400000, guid: 27c9da781c57ccc4d81df26c6c571530, type: 2}
-      quantity: 1
-      chance: 0.2
-    - itemData: {fileID: 11400000, guid: ddf805a02559edd41a5a75971f9838eb, type: 2}
-      quantity: 1
-      chance: 0.2
-    - itemData: {fileID: 11400000, guid: 9d43ca7e71b00844196b676bf0fbbabd, type: 2}
-      quantity: 1
-      chance: 0.2
-    - itemData: {fileID: 11400000, guid: f720f900a20e5f04a9e8f139d46c6297, type: 2}
-      quantity: 1
-      chance: 0.2
+      chance: 1

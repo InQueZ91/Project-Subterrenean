@@ -23,5 +23,11 @@ namespace UI.Fabricator
             stacksText.text = stacks > 0 ? $"{stacks}/{maxStack}" : "";
             icon.color = isUsable ? Color.greenYellow : Color.gray;
         }
+        
+        public void SetEmpty()
+        {
+            icon.enabled = false;
+            stacksText.text = "";
+        }
     }
 }
